@@ -1,0 +1,702 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ board.name }}{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d1117;
+    --ivory: #f9f6f0;
+    --gold: #c9a84c;
+    --gold-light: #f0d890;
+    --gold-glow: rgba(201,168,76,0.14);
+    --slate: #6b7280;
+    --surface: #ffffff;
+    --border: #e8e2d9;
+    --danger: #dc2626;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--ivory); color: var(--ink); }
+
+  /* ── Layout ── */
+  .eb-page { max-width: 1320px; margin: 0 auto; padding: 0 0 80px; }
+
+  /* ── Hero Banner ── */
+  .eb-hero {
+    background: var(--ink);
+    color: white;
+    padding: 56px 48px 48px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .eb-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(201,168,76,0.12) 0%, transparent 70%),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.015) 40px,
+        rgba(255,255,255,0.015) 41px
+      );
+  }
+  .eb-hero-inner { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
+  .eb-hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .eb-hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    margin: 0 0 10px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .eb-hero p { color: rgba(255,255,255,0.6); max-width: 520px; font-size: 0.95rem; margin: 0; }
+  .eb-hero-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .eb-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .eb-badge-active { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+  .eb-badge-inactive { background: rgba(148,163,184,0.15); color: #94a3b8; border: 1px solid rgba(148,163,184,0.3); }
+  .eb-badge-date { background: rgba(201,168,76,0.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.25); }
+
+  .eb-hero-actions { display: flex; gap: 10px; }
+  .eb-btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .eb-btn-gold { background: var(--gold); color: var(--ink); }
+  .eb-btn-gold:hover { background: var(--gold-light); }
+  .eb-btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.25); }
+  .eb-btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── Quick Stats ── */
+  .eb-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 0 48px 40px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  }
+  .eb-qs-item {
+    background: var(--surface);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .eb-qs-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .eb-qs-label { font-size: 0.75rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+  .eb-qs-sub { font-size: 0.78rem; color: var(--gold); font-weight: 500; margin-top: 2px; }
+
+  /* ── Sections ── */
+  .eb-section { padding: 0 48px; margin-bottom: 52px; }
+  .eb-section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .eb-section-title h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0;
+  }
+  .eb-section-title-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .eb-section-count {
+    font-size: 0.72rem;
+    color: var(--slate);
+    background: var(--ivory);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-weight: 600;
+  }
+
+  /* ── Member Cards ── */
+  .eb-members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .eb-member-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.22s, box-shadow 0.22s;
+    position: relative;
+  }
+  .eb-member-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.09); }
+  .eb-member-card.leader::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+
+  .eb-mc-inner { padding: 24px 20px 16px; text-align: center; }
+  .eb-mc-avatar-wrap { position: relative; display: inline-block; margin-bottom: 14px; }
+  .eb-mc-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--ivory);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    display: block;
+  }
+  .eb-mc-avatar-ph {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ede8df 0%, #d4cbbc 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--slate);
+    border: 3px solid var(--ivory);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin: 0 auto;
+  }
+  .eb-mc-dot {
+    position: absolute; bottom: 2px; right: 2px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  .eb-mc-dot.on { background: #22c55e; }
+  .eb-mc-dot.off { background: #94a3b8; }
+
+  .eb-mc-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 2px;
+  }
+  .eb-mc-uname { font-size: 0.75rem; color: var(--slate); margin-bottom: 8px; }
+  .eb-mc-pos {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8a6a10;
+    background: var(--gold-glow);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+    max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  .eb-mc-meta {
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .eb-mc-meta-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; color: var(--slate);
+  }
+  .eb-mc-meta-row i { color: var(--gold); width: 12px; font-size: 0.7rem; }
+  .eb-mc-footer {
+    background: var(--ivory);
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--slate);
+    border-top: 1px solid var(--border);
+  }
+  .eb-role-pill {
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  .eb-role-pill.voting_member { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .eb-role-pill.ex_officio { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .eb-role-pill.observer { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+  .eb-role-pill.advisor { background: #faf5ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+
+  /* ── Chapters Grid ── */
+  .eb-chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .eb-chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .eb-chapter-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.07); }
+  .eb-chapter-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .eb-chapter-logo {
+    width: 44px; height: 44px; border-radius: 10px; object-fit: cover;
+    border: 1px solid var(--border);
+  }
+  .eb-chapter-logo-ph {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--ivory);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: var(--slate);
+    border: 1px solid var(--border);
+  }
+  .eb-chapter-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+  .eb-chapter-country { font-size: 0.75rem; color: var(--slate); }
+  .eb-chapter-standing {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  .eb-chapter-standing.good { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .eb-chapter-standing.bad { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
+
+  /* ── Positions Table ── */
+  .eb-positions-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+  }
+  .eb-positions-table th {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 600;
+    padding: 0 16px 8px;
+    text-align: left;
+  }
+  .eb-positions-table td {
+    background: var(--surface);
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    border: 1px solid transparent;
+    border-top-color: var(--border);
+    border-bottom-color: var(--border);
+  }
+  .eb-positions-table td:first-child { border-left-color: var(--border); border-radius: 10px 0 0 10px; }
+  .eb-positions-table td:last-child { border-right-color: var(--border); border-radius: 0 10px 10px 0; }
+  .eb-pos-order {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: var(--ivory);
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--slate);
+  }
+  .eb-pos-level { font-size: 0.7rem; color: var(--slate); margin-top: 2px; }
+  .eb-pos-incl-badge {
+    font-size: 0.65rem;
+    background: var(--gold-glow);
+    color: #8a6a10;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-weight: 600;
+  }
+  .eb-pos-holder-mini {
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none; color: inherit;
+  }
+  .eb-pos-holder-mini:hover .eb-pos-holder-name { color: var(--gold); }
+  .eb-pos-mini-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+  .eb-pos-mini-ph {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--ivory);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 700; color: var(--slate);
+  }
+  .eb-pos-holder-name { font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+  .eb-pos-vacant { font-size: 0.78rem; color: var(--slate); font-style: italic; }
+
+  /* ── Past Members ── */
+  .eb-past-list { display: flex; flex-direction: column; gap: 10px; }
+  .eb-past-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .eb-past-avatar {
+    width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--border); flex-shrink: 0;
+  }
+  .eb-past-avatar-ph {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--ivory); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif; font-size: 1rem;
+    color: var(--slate); flex-shrink: 0;
+  }
+  .eb-past-info { flex: 1; }
+  .eb-past-name { font-weight: 500; font-size: 0.9rem; }
+  .eb-past-detail { font-size: 0.75rem; color: var(--slate); margin-top: 2px; }
+  .eb-past-date { font-size: 0.75rem; color: var(--slate); text-align: right; white-space: nowrap; }
+
+  /* ── Empty State ── */
+  .eb-empty {
+    text-align: center;
+    padding: 48px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    color: var(--slate);
+  }
+  .eb-empty i { font-size: 2rem; margin-bottom: 10px; display: block; color: var(--border); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .eb-hero { padding: 36px 24px 32px; }
+    .eb-quick-stats { grid-template-columns: repeat(2,1fr); margin: 0 24px 32px; }
+    .eb-section { padding: 0 24px; }
+    .eb-members-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  }
+  @media (max-width: 600px) {
+    .eb-quick-stats { grid-template-columns: 1fr 1fr; margin: 0 16px 28px; }
+    .eb-section { padding: 0 16px; }
+    .eb-hero { padding: 28px 16px; }
+    .eb-hero-actions { flex-wrap: wrap; }
+    .eb-members-grid { grid-template-columns: 1fr 1fr; }
+    .eb-chapters-grid { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="eb-page">
+
+  <!-- Hero -->
+  <div class="eb-hero">
+    <div class="eb-hero-inner">
+      <div>
+        <div class="eb-hero-eyebrow">Executive Board</div>
+        <h1>{{ board.name }}</h1>
+        <p>{{ board.description|truncatewords:25|default:"International executive leadership overseeing all chapter operations and organizational direction." }}</p>
+        <div class="eb-hero-badges">
+          {% if board.is_active %}
+            <span class="eb-badge eb-badge-active"><i class="fas fa-check-circle me-1"></i> Active</span>
+          {% else %}
+            <span class="eb-badge eb-badge-inactive"><i class="fas fa-minus-circle me-1"></i> Inactive</span>
+          {% endif %}
+          {% if board.formed_date %}
+            <span class="eb-badge eb-badge-date"><i class="fas fa-calendar me-1"></i> Formed {{ board.formed_date|date:"F Y" }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% if can_edit %}
+      <div class="eb-hero-actions">
+        <a href="{% url 'executive_board_edit' board.pk %}" class="eb-btn eb-btn-gold">
+          <i class="fas fa-edit"></i> Edit Board
+        </a>
+        <a href="{% url 'executive_board_list' %}" class="eb-btn eb-btn-outline">
+          <i class="fas fa-arrow-left"></i> All Boards
+        </a>
+      </div>
+      {% else %}
+      <a href="{% url 'executive_board_list' %}" class="eb-btn eb-btn-outline">
+        <i class="fas fa-arrow-left"></i> All Boards
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="eb-quick-stats">
+    <div class="eb-qs-item">
+      <div class="eb-qs-num">{{ current_members.count }}</div>
+      <div class="eb-qs-label">Active Members</div>
+      <div class="eb-qs-sub">{{ past_members.count }} former</div>
+    </div>
+    <div class="eb-qs-item">
+      <div class="eb-qs-num">{{ member_chapters.count }}</div>
+      <div class="eb-qs-label">Member Chapters</div>
+      <div class="eb-qs-sub">Affiliated chapters</div>
+    </div>
+    <div class="eb-qs-item">
+      <div class="eb-qs-num">{{ positions.count }}</div>
+      <div class="eb-qs-label">Board Positions</div>
+      <div class="eb-qs-sub">Defined roles</div>
+    </div>
+    <div class="eb-qs-item">
+      <div class="eb-qs-num">{{ chapter_reps.count }}</div>
+      <div class="eb-qs-label">Chapter Reps</div>
+      <div class="eb-qs-sub">Representing chapters</div>
+    </div>
+  </div>
+
+  <!-- Current Members -->
+  <div class="eb-section">
+    <div class="eb-section-title">
+      <h2>Current Members</h2>
+      <div class="eb-section-title-line"></div>
+      <span class="eb-section-count">{{ current_members.count }}</span>
+    </div>
+
+    <div class="eb-members-grid">
+      {% for membership in current_members %}
+      <a href="{% url 'user-profile' membership.user.uuid %}" class="eb-member-card {% if membership.board_position.precedence_order == 1 %}leader{% endif %}">
+        <div class="eb-mc-inner">
+          <div class="eb-mc-avatar-wrap">
+            {% if membership.user.profile_image %}
+              <img src="{{ membership.user.profile_image.url }}" alt="{{ membership.user.get_full_name }}" class="eb-mc-avatar">
+            {% else %}
+              <div class="eb-mc-avatar-ph">
+                {{ membership.user.first_name|first|upper }}{{ membership.user.last_name|first|upper }}
+              </div>
+            {% endif %}
+            <span class="eb-mc-dot on"></span>
+          </div>
+          <div class="eb-mc-name">{{ membership.user.get_full_name|default:membership.user.username }}</div>
+          <div class="eb-mc-uname">@{{ membership.user.username }}</div>
+          {% if membership.board_position %}
+          <div class="eb-mc-pos">{{ membership.board_position.name }}</div>
+          {% endif %}
+        </div>
+
+        <div class="eb-mc-meta">
+          {% if membership.chapter %}
+          <div class="eb-mc-meta-row">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ membership.chapter.name }}</span>
+          </div>
+          {% endif %}
+          {% if membership.user.phone_number %}
+          <div class="eb-mc-meta-row">
+            <i class="fas fa-phone"></i>
+            <span>{{ membership.user.phone_number }}</span>
+          </div>
+          {% endif %}
+          <div class="eb-mc-meta-row">
+            <i class="fas fa-calendar"></i>
+            <span>Since {{ membership.start_date|date:"M Y" }}</span>
+          </div>
+          {% if membership.represents_chapter %}
+          <div class="eb-mc-meta-row" style="color: var(--gold); font-weight: 600;">
+            <i class="fas fa-star"></i>
+            <span>Chapter Representative</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="eb-mc-footer">
+          <span class="eb-role-pill {{ membership.role_type }}">{{ membership.get_role_type_display }}</span>
+          <span style="color: var(--gold); font-size: 0.72rem; font-weight: 600;">
+            View <i class="fas fa-arrow-right" style="font-size:0.6rem;"></i>
+          </span>
+        </div>
+      </a>
+      {% empty %}
+      <div class="eb-empty" style="grid-column:1/-1;">
+        <i class="fas fa-user-slash"></i>
+        <p>No active members found for this board.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Positions -->
+  {% if positions %}
+  <div class="eb-section">
+    <div class="eb-section-title">
+      <h2>Board Positions</h2>
+      <div class="eb-section-title-line"></div>
+      <span class="eb-section-count">{{ positions.count }}</span>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; overflow-x: auto;">
+      <table class="eb-positions-table" style="margin: 12px 0;">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Position</th>
+            <th>Level</th>
+            <th>Holder</th>
+            <th>Term</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for position in positions %}
+          <tr>
+            <td><span class="eb-pos-order">{{ position.precedence_order }}</span></td>
+            <td>
+              <div style="font-weight: 600; font-size: 0.9rem;">{{ position.name }}</div>
+              <div class="eb-pos-level">{{ position.get_type_display }}</div>
+            </td>
+            <td style="font-size: 0.8rem; color: var(--slate);">{{ position.get_level_display }}</td>
+            <td>
+              {% if position.holder %}
+              <a href="{% url 'user-profile' position.holder.uuid %}" class="eb-pos-holder-mini">
+                {% if position.holder.profile_image %}
+                  <img src="{{ position.holder.profile_image.url }}" alt="" class="eb-pos-mini-avatar">
+                {% else %}
+                  <div class="eb-pos-mini-ph">
+                    {{ position.holder.first_name|first|upper }}{{ position.holder.last_name|first|upper }}
+                  </div>
+                {% endif %}
+                <span class="eb-pos-holder-name">{{ position.holder.get_full_name|default:position.holder.username }}</span>
+              </a>
+              {% else %}
+                <span class="eb-pos-vacant">Vacant</span>
+              {% endif %}
+            </td>
+            <td style="font-size: 0.78rem; color: var(--slate);">
+              {% if position.term_start %}
+                {{ position.term_start|date:"M Y" }}
+                {% if position.term_end %} – {{ position.term_end|date:"M Y" }}{% endif %}
+              {% else %}—{% endif %}
+            </td>
+            <td>
+              {% if position.includes_executive_membership %}
+              <span class="eb-pos-incl-badge">Exec. Seat</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Member Chapters -->
+  {% if member_chapters %}
+  <div class="eb-section">
+    <div class="eb-section-title">
+      <h2>Member Chapters</h2>
+      <div class="eb-section-title-line"></div>
+      <span class="eb-section-count">{{ member_chapters.count }}</span>
+    </div>
+
+    <div class="eb-chapters-grid">
+      {% for chapter in member_chapters %}
+      <a href="{{ chapter.get_absolute_url }}" class="eb-chapter-card">
+        <div class="eb-chapter-card-top">
+          {% if chapter.logo %}
+            <img src="{{ chapter.logo.url }}" alt="{{ chapter.name }}" class="eb-chapter-logo">
+          {% else %}
+            <div class="eb-chapter-logo-ph"><i class="fas fa-flag"></i></div>
+          {% endif %}
+          <div>
+            <div class="eb-chapter-name">{{ chapter.name }}</div>
+            <div class="eb-chapter-country">{{ chapter.country }}</div>
+          </div>
+        </div>
+        <span class="eb-chapter-standing {% if chapter.is_good_standing %}good{% else %}bad{% endif %}">
+          {% if chapter.is_good_standing %}Good Standing{% else %}Not in Good Standing{% endif %}
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Past Members -->
+  {% if past_members %}
+  <div class="eb-section">
+    <div class="eb-section-title">
+      <h2>Former Members</h2>
+      <div class="eb-section-title-line"></div>
+      <span class="eb-section-count">{{ past_members.count }}</span>
+    </div>
+
+    <div class="eb-past-list">
+      {% for membership in past_members %}
+      <div class="eb-past-item">
+        {% if membership.user.profile_image %}
+          <img src="{{ membership.user.profile_image.url }}" alt="{{ membership.user.get_full_name }}" class="eb-past-avatar">
+        {% else %}
+          <div class="eb-past-avatar-ph">
+            {{ membership.user.first_name|first|upper }}{{ membership.user.last_name|first|upper }}
+          </div>
+        {% endif %}
+        <div class="eb-past-info">
+          <div class="eb-past-name">{{ membership.user.get_full_name|default:membership.user.username }}</div>
+          <div class="eb-past-detail">
+            {% if membership.board_position %}{{ membership.board_position.name }}{% endif %}
+            {% if membership.chapter %} · {{ membership.chapter.name }}{% endif %}
+            · <span style="text-transform: capitalize;">{{ membership.get_role_type_display }}</span>
+          </div>
+        </div>
+        <div class="eb-past-date">
+          {{ membership.start_date|date:"M Y" }}
+          {% if membership.end_date %}<br>– {{ membership.end_date|date:"M Y" }}{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,638 @@
+
+{% load static %}
+
+{% block title %}Board Members{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d1117;
+    --ivory: #f9f6f0;
+    --gold: #c9a84c;
+    --gold-light: #f0d890;
+    --gold-glow: rgba(201,168,76,0.14);
+    --slate: #6b7280;
+    --surface: #ffffff;
+    --border: #e8e2d9;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ivory);
+    color: var(--ink);
+  }
+
+  /* ── Page Shell ── */
+  .bm-page { padding: 48px 40px 80px; max-width: 1400px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .bm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .bm-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .bm-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 6px;
+  }
+  .bm-header p { color: var(--slate); margin: 0; font-size: 0.9rem; }
+
+  .bm-add-btn {
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 26px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+  .bm-add-btn:hover { background: #1e293b; transform: translateY(-1px); color: white; }
+
+  /* ── Filter Bar ── */
+  .bm-filters {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 26px;
+    margin-bottom: 36px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .bm-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    align-items: flex-end;
+  }
+  .bm-filter-group { display: flex; flex-direction: column; gap: 6px; }
+  .bm-filter-group label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 600;
+  }
+  .bm-filter-group select,
+  .bm-filter-group input {
+    background: var(--ivory);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .bm-filter-group select:focus,
+  .bm-filter-group input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+
+  .bm-filter-btn {
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+  .bm-filter-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .bm-filter-clear {
+    font-size: 0.78rem;
+    color: var(--slate);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 0;
+    align-self: flex-end;
+    transition: color 0.2s;
+  }
+  .bm-filter-clear:hover { color: var(--ink); }
+
+  /* ── Results Info ── */
+  .bm-results-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .bm-results-count { font-size: 0.85rem; color: var(--slate); }
+  .bm-results-count strong { color: var(--ink); font-weight: 600; }
+
+  .bm-active-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .bm-filter-tag {
+    background: var(--gold-glow);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: #8a6a10;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── Members Grid ── */
+  .bm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 22px;
+  }
+
+  /* ── Member Card ── */
+  .bm-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .bm-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+    border-color: rgba(201,168,76,0.4);
+  }
+  .bm-card.is-active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+  }
+  .bm-card.is-inactive { opacity: 0.72; }
+
+  /* Avatar */
+  .bm-card-top {
+    padding: 28px 22px 18px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .bm-avatar-wrap { position: relative; flex-shrink: 0; }
+  .bm-avatar {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--ivory);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    display: block;
+  }
+  .bm-avatar-ph {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ede8df 0%, #d4cbbc 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: #6b7280;
+    border: 3px solid var(--ivory);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .bm-status-dot {
+    position: absolute;
+    bottom: 3px; right: 3px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2.5px solid var(--surface);
+  }
+  .bm-status-dot.dot-active  { background: #22c55e; }
+  .bm-status-dot.dot-inactive { background: #94a3b8; }
+
+  /* Name / position */
+  .bm-card-info { flex: 1; min-width: 0; }
+  .bm-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin: 0 0 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .bm-username { font-size: 0.75rem; color: var(--slate); margin-bottom: 10px; }
+  .bm-pos-tag {
+    display: inline-block;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #8a6a10;
+    background: var(--gold-glow);
+    border: 1px solid rgba(201,168,76,0.28);
+    border-radius: 6px;
+    padding: 3px 10px;
+    max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .bm-pos-tag.no-pos { color: var(--slate); background: var(--ivory); border-color: var(--border); }
+
+  /* Meta */
+  .bm-card-meta {
+    padding: 0 22px 16px;
+    display: flex; flex-direction: column; gap: 7px;
+  }
+  .bm-meta-row {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 0.82rem; color: var(--slate); line-height: 1.3;
+  }
+  .bm-meta-row i { width: 13px; text-align: center; color: var(--gold); font-size: 0.72rem; flex-shrink: 0; }
+  .bm-meta-row .val { color: var(--ink); font-weight: 500; }
+
+  /* Tags */
+  .bm-tags {
+    padding: 0 22px 16px;
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  }
+  .bm-role-pill {
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 0.68rem; font-weight: 600;
+    text-transform: capitalize; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .bm-role-pill.voting_member { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .bm-role-pill.ex_officio    { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .bm-role-pill.observer      { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+  .bm-role-pill.advisor       { background: #faf5ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+  .bm-rep-flag {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold);
+  }
+
+  /* Footer */
+  .bm-card-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding: 13px 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--ivory);
+  }
+  .bm-footer-status {
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .bm-footer-status.active-status  { color: #16a34a; }
+  .bm-footer-status.inactive-status { color: #94a3b8; }
+  .bm-view-link {
+    font-size: 0.78rem; font-weight: 600; color: var(--ink);
+    text-decoration: none; display: flex; align-items: center; gap: 5px;
+    transition: color 0.2s;
+  }
+  .bm-view-link:hover { color: var(--gold); }
+
+  /* ── Empty ── */
+  .bm-empty {
+    grid-column: 1 / -1;
+    text-align: center; padding: 80px 24px;
+  }
+  .bm-empty-icon { font-size: 3.5rem; color: var(--border); margin-bottom: 20px; }
+  .bm-empty h4 {
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: 1.4rem; margin-bottom: 8px;
+  }
+  .bm-empty p { color: var(--slate); font-size: 0.9rem; }
+
+  /* ── Pagination ── */
+  .bm-pagination {
+    display: flex; justify-content: center; align-items: center;
+    gap: 6px; margin-top: 52px; flex-wrap: wrap;
+  }
+  .bm-page-link, .bm-page-current {
+    display: flex; align-items: center; justify-content: center;
+    min-width: 38px; height: 38px; padding: 0 10px;
+    border-radius: 10px; border: 1px solid var(--border);
+    font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+    background: var(--surface); text-decoration: none; color: var(--ink);
+    transition: all 0.2s;
+  }
+  .bm-page-link:hover { border-color: var(--gold); color: var(--gold); }
+  .bm-page-current {
+    background: var(--ink); color: white;
+    border-color: var(--ink); font-weight: 700;
+  }
+  .bm-page-dots { color: var(--slate); font-size: 0.85rem; padding: 0 4px; }
+
+  @media (max-width: 768px) {
+    .bm-page { padding: 28px 16px 60px; }
+    .bm-grid { grid-template-columns: 1fr 1fr; }
+    .bm-header { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 500px) {
+    .bm-grid { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bm-page">
+
+  <!-- Header -->
+  <div class="bm-header">
+    <div>
+      <div class="bm-eyebrow">Leadership Registry</div>
+      <h1>Board <em>Members</em></h1>
+      <p>International executive board members and their chapter affiliations</p>
+    </div>
+    {% if request.user.is_staff %}
+    <a href="#" class="bm-add-btn">
+      <i class="fas fa-plus"></i> Add Member
+    </a>
+    {% endif %}
+  </div>
+
+  <!-- Filters -->
+  <form method="get" class="bm-filters">
+    <div class="bm-filters-grid">
+
+      <div class="bm-filter-group">
+        <label>Executive Board</label>
+        <select name="board">
+          <option value="">All Boards</option>
+          {% for eb in executive_boards %}
+          <option value="{{ eb.pk }}"
+            {% if current_filters.board == eb.pk|stringformat:"s" %}selected{% endif %}>
+            {{ eb.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="bm-filter-group">
+        <label>Status</label>
+        <select name="active">
+          <option value="">All Statuses</option>
+          <option value="true"  {% if current_filters.active == 'true'  %}selected{% endif %}>Active</option>
+          <option value="false" {% if current_filters.active == 'false' %}selected{% endif %}>Inactive</option>
+        </select>
+      </div>
+
+      <div class="bm-filter-group">
+        <label>Role Type</label>
+        <select name="role_type">
+          <option value="">All Roles</option>
+          {% for val, label in role_choices %}
+          <option value="{{ val }}"
+            {% if current_filters.role_type == val %}selected{% endif %}>
+            {{ label }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="bm-filter-group">
+        <label>Chapter Reps</label>
+        <select name="represents_chapter">
+          <option value="">All Members</option>
+          <option value="true"
+            {% if current_filters.represents_chapter == 'true' %}selected{% endif %}>
+            Reps Only
+          </option>
+        </select>
+      </div>
+
+      <button type="submit" class="bm-filter-btn">
+        <i class="fas fa-filter"></i> Apply
+      </button>
+
+      {% if current_filters.board or current_filters.active or current_filters.role_type or current_filters.represents_chapter %}
+      <a href="{% url 'board_membership_list' %}" class="bm-filter-clear">
+        <i class="fas fa-times-circle"></i> Clear
+      </a>
+      {% endif %}
+
+    </div>
+  </form>
+
+  <!-- Results bar -->
+  <div class="bm-results-bar">
+    <div class="bm-results-count">
+      {% if is_paginated %}
+        Showing <strong>{{ page_obj.start_index }}–{{ page_obj.end_index }}</strong>
+        of <strong>{{ paginator.count }}</strong> member{{ paginator.count|pluralize }}
+      {% else %}
+        <strong>{{ memberships|length }}</strong> member{{ memberships|length|pluralize }}
+      {% endif %}
+    </div>
+    <div class="bm-active-filters">
+      {% if current_filters.active == 'true'  %}<span class="bm-filter-tag"><i class="fas fa-circle"></i> Active Only</span>{% endif %}
+      {% if current_filters.active == 'false' %}<span class="bm-filter-tag"><i class="fas fa-circle"></i> Inactive Only</span>{% endif %}
+      {% if current_filters.represents_chapter == 'true' %}<span class="bm-filter-tag"><i class="fas fa-star"></i> Chapter Reps</span>{% endif %}
+      {% if current_filters.role_type %}<span class="bm-filter-tag"><i class="fas fa-id-badge"></i> {{ current_filters.role_type|title }}</span>{% endif %}
+    </div>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="bm-grid">
+    {% for membership in memberships %}
+
+    <div class="bm-card {% if membership.is_active %}is-active{% else %}is-inactive{% endif %}">
+
+      <!-- Avatar + name + position -->
+      <div class="bm-card-top">
+        <div class="bm-avatar-wrap">
+          {% if membership.user.profile_image %}
+            <img src="{{ membership.user.profile_image.url }}"
+                 alt="{{ membership.user.get_full_name|default:membership.user.username }}"
+                 class="bm-avatar">
+          {% else %}
+            <div class="bm-avatar-ph">
+              {{ membership.user.first_name|first|default:membership.user.username|first|upper }}{% if membership.user.last_name %}{{ membership.user.last_name|first|upper }}{% endif %}
+            </div>
+          {% endif %}
+          <span class="bm-status-dot {% if membership.is_active %}dot-active{% else %}dot-inactive{% endif %}"></span>
+        </div>
+
+        <div class="bm-card-info">
+          <div class="bm-name">
+            {% firstof membership.user.get_full_name membership.user.username %}
+          </div>
+          <div class="bm-username">@{{ membership.user.username }}</div>
+
+          {% if membership.board_position %}
+            <span class="bm-pos-tag">{{ membership.board_position.name }}</span>
+          {% else %}
+            <span class="bm-pos-tag no-pos">No Position Assigned</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Meta rows -->
+      <div class="bm-card-meta">
+        {% if membership.executive_board %}
+        <div class="bm-meta-row">
+          <i class="fas fa-sitemap"></i>
+          <span>{{ membership.executive_board.name }}</span>
+        </div>
+        {% endif %}
+
+        {% if membership.chapter %}
+        <div class="bm-meta-row">
+          <i class="fas fa-map-marker-alt"></i>
+          <span class="val">{{ membership.chapter.name }}</span>
+          {% if membership.chapter.country %}
+            <span>· {{ membership.chapter.country }}</span>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if membership.user.email %}
+        <div class="bm-meta-row">
+          <i class="fas fa-envelope"></i>
+          <span>{{ membership.user.email }}</span>
+        </div>
+        {% endif %}
+
+        {% if membership.user.phone_number %}
+        <div class="bm-meta-row">
+          <i class="fas fa-phone"></i>
+          <span>{{ membership.user.phone_number }}</span>
+        </div>
+        {% endif %}
+
+        <div class="bm-meta-row">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Since <span class="val">{{ membership.start_date|date:"M j, Y" }}</span>
+          {% if membership.end_date %}&mdash; {{ membership.end_date|date:"M j, Y" }}{% endif %}</span>
+        </div>
+
+        {% if membership.chapter_position %}
+        <div class="bm-meta-row">
+          <i class="fas fa-id-badge"></i>
+          <span>Chapter role: <span class="val">{{ membership.chapter_position.name }}</span></span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Role + rep badge -->
+      <div class="bm-tags">
+        <span class="bm-role-pill {{ membership.role_type }}">
+          {{ membership.get_role_type_display }}
+        </span>
+        {% if membership.represents_chapter %}
+        <span class="bm-rep-flag">
+          <i class="fas fa-star" style="font-size:0.58rem;"></i> Chapter Rep
+        </span>
+        {% endif %}
+      </div>
+
+      <!-- Footer -->
+      <div class="bm-card-footer">
+        {% if membership.is_active %}
+          <span class="bm-footer-status active-status">
+            <i class="fas fa-check-circle"></i> Active
+          </span>
+        {% else %}
+          <span class="bm-footer-status inactive-status">
+            <i class="fas fa-minus-circle"></i> Former
+          </span>
+        {% endif %}
+
+        <a href="{% url 'user-profile' membership.user.uuid %}" class="bm-view-link">
+          View Profile <i class="fas fa-arrow-right" style="font-size:0.6rem;"></i>
+        </a>
+      </div>
+
+    </div><!-- /.bm-card -->
+
+    {% empty %}
+    <div class="bm-empty">
+      <div class="bm-empty-icon"><i class="fas fa-users-slash"></i></div>
+      <h4>No Members Found</h4>
+      <p>
+        {% if current_filters.board or current_filters.active or current_filters.role_type or current_filters.represents_chapter %}
+          No results match your current filters — try adjusting or clearing them.
+        {% else %}
+          No board memberships have been created yet.
+        {% endif %}
+      </p>
+      {% if current_filters.board or current_filters.active or current_filters.role_type or current_filters.represents_chapter %}
+        <a href="{% url 'board_membership_list' %}"
+           style="display:inline-block;margin-top:14px;color:var(--gold);font-weight:600;text-decoration:none;">
+          <i class="fas fa-times-circle me-1"></i> Clear Filters
+        </a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div><!-- /.bm-grid -->
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+  <div class="bm-pagination">
+    {% if page_obj.has_previous %}
+      <a class="bm-page-link"
+         href="?page=1{% for k,v in request.GET.items %}{% if k != 'page' %}&{{ k }}={{ v }}{% endif %}{% endfor %}">
+        <i class="fas fa-angle-double-left"></i>
+      </a>
+      <a class="bm-page-link"
+         href="?page={{ page_obj.previous_page_number }}{% for k,v in request.GET.items %}{% if k != 'page' %}&{{ k }}={{ v }}{% endif %}{% endfor %}">
+        <i class="fas fa-angle-left"></i>
+      </a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <span class="bm-page-current">{{ num }}</span>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a class="bm-page-link"
+           href="?page={{ num }}{% for k,v in request.GET.items %}{% if k != 'page' %}&{{ k }}={{ v }}{% endif %}{% endfor %}">
+          {{ num }}
+        </a>
+      {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+        <span class="bm-page-dots">…</span>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <a class="bm-page-link"
+         href="?page={{ page_obj.next_page_number }}{% for k,v in request.GET.items %}{% if k != 'page' %}&{{ k }}={{ v }}{% endif %}{% endfor %}">
+        <i class="fas fa-angle-right"></i>
+      </a>
+      <a class="bm-page-link"
+         href="?page={{ page_obj.paginator.num_pages }}{% for k,v in request.GET.items %}{% if k != 'page' %}&{{ k }}={{ v }}{% endif %}{% endfor %}">
+        <i class="fas fa-angle-double-right"></i>
+      </a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+</div><!-- /.bm-page -->
+{% endblock %}

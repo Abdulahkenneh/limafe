@@ -1,0 +1,1860 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+:root {
+    --primary-color: #4361ee;
+    --primary-light: #4895ef;
+    --primary-dark: #3a0ca3;
+    --secondary-color: #f72585;
+    --accent-color: #4cc9f0;
+    --dark-color: #1e293b;
+    --gray-900: #334155;
+    --gray-800: #475569;
+    --gray-700: #64748b;
+    --gray-600: #94a3b8;
+    --gray-500: #cbd5e1;
+    --gray-400: #e2e8f0;
+    --gray-300: #f1f5f9;
+    --gray-200: #f8fafc;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+}
+
+.team-page {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    color: var(--gray-900);
+}
+
+/* Hero Section */
+.team-hero {
+    position: relative;
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 50%, var(--primary-light) 100%);
+    color: var(--white);
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+}
+
+.team-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url({% static 'assets/img/breadcrumb/europeans.jpg' %}) center/cover no-repeat;
+    opacity: 0.2;
+    mix-blend-mode: overlay;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: '›';
+    margin-left: 0.5rem;
+    opacity: 0.6;
+}
+
+.breadcrumb-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+    color: var(--white);
+}
+
+.breadcrumb-current {
+    color: var(--white);
+    font-weight: 600;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, var(--white), rgba(255, 255, 255, 0.9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 600px;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Filters Section */
+.filters-section {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-300);
+    padding: 1.5rem 0;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.filter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Mobile Filter Toggle */
+.filter-toggle-mobile {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--white);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    padding: 0.875rem 1.25rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-toggle-mobile:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Filter Controls */
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    white-space: nowrap;
+}
+
+.filter-scroll {
+    flex: 1;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.25rem 0;
+}
+
+.filter-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.25rem;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    border: 2px solid var(--gray-300);
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.filter-btn:hover:not(.active) {
+    border-color: var(--primary-light);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.filter-badge {
+    background: var(--gray-200);
+    color: var(--gray-700);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-sm);
+    min-width: 1.75rem;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.filter-btn.active .filter-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+}
+
+/* Search Panel */
+.search-panel {
+    position: relative;
+    margin-top: 1rem;
+}
+
+.search-container {
+    position: relative;
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-300);
+}
+
+.search-form {
+    position: relative;
+}
+
+.search-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--gray-500);
+    font-size: 1.25rem;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gray-900);
+    background: var(--white);
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.search-clear {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+    display: none;
+}
+
+.search-hints {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--gray-100);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+}
+
+.hint-icon {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.hint-text {
+    color: var(--gray-600);
+    flex: 1;
+}
+
+/* Results Info */
+.results-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--gray-300);
+    margin-bottom: 2rem;
+}
+
+.results-count {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.count-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.count-text {
+    font-size: 1rem;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+.clear-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: var(--white);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clear-filters:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+    transform: translateY(-1px);
+}
+
+/* Team Grid */
+.team-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+}
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--gray-200) 0%, var(--white) 100%);
+    border-radius: var(--radius-xl);
+    margin: 2rem 0;
+    border: 1px solid var(--gray-300);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.section-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--primary-color);
+}
+
+.section-icon i {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+}
+
+.section-content {
+    flex: 1;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+}
+
+.section-description {
+    font-size: 1rem;
+    color: var(--gray-600);
+    margin: 0 0 1rem 0;
+    line-height: 1.5;
+}
+
+.section-badge {
+    flex-shrink: 0;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+}
+
+/* Members Grid */
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+/* Member Card */
+.member-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-300);
+    overflow: hidden;
+    transition: all 0.3s;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-light);
+}
+
+.member-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.member-card:hover::before {
+    opacity: 1;
+}
+
+.card-header {
+    padding: 2rem 2rem 0;
+    position: relative;
+}
+
+.member-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+}
+
+.member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--white);
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s;
+}
+
+.member-card:hover .member-image img {
+    transform: scale(1.05);
+    border-color: var(--primary-light);
+}
+
+.member-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.badge-executive {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+}
+
+.badge-board {
+    background: linear-gradient(135deg, var(--secondary-color), #d0007d);
+}
+
+.badge-leader {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.card-body {
+    padding: 0 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.member-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin: 0;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.member-positions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    min-height: 1.5rem;
+}
+
+.position-tag {
+    padding: 0.25rem 0.75rem;
+    background: var(--gray-200);
+    color: var(--gray-700);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+}
+
+.position-more {
+    padding: 0.25rem 0.5rem;
+    background: var(--gray-300);
+    color: var(--gray-600);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: help;
+}
+
+.member-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0.5rem 0;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--gray-600);
+    font-size: 0.875rem;
+}
+
+.detail-item i {
+    width: 16px;
+    color: var(--primary-color);
+    font-size: 0.875rem;
+}
+
+.card-footer {
+    padding: 1.5rem 2rem;
+    background: var(--gray-100);
+    border-top: 1px solid var(--gray-300);
+    margin-top: auto;
+}
+
+.member-social {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--white);
+    border-radius: 50%;
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid var(--gray-300);
+}
+
+.social-link:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Team Sections */
+.team-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.team-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .team-hero {
+        padding: 3rem 0;
+        min-height: 350px;
+    }
+    
+    .filter-toggle-mobile {
+        display: flex;
+    }
+    
+    .filter-controls {
+        display: none;
+    }
+    
+    .filter-controls.active {
+        display: flex;
+        order: 3;
+        width: 100%;
+    }
+    
+    .members-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+    
+    .section-icon {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .members-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-info {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+</style>
+
+<main class="team-page">
+    <!-- Hero Section -->
+    <section class="team-hero">
+        <div class="hero-container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <div class="breadcrumb-item">
+                    <a href="{% url 'home' %}" class="breadcrumb-link">Home</a>
+                </div>
+                <div class="breadcrumb-item breadcrumb-current">
+                    Our Team
+                </div>
+            </nav>
+            
+            <div class="hero-content">
+                <h1 class="hero-title">Meet Our Team</h1>
+                <p class="hero-subtitle">Talented individuals working together to achieve great things</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <div class="filter-container">
+            <!-- Mobile Filter Toggle -->
+            <button class="filter-toggle-mobile" id="filterToggle">
+                <i class="fas fa-filter"></i>
+                <span>Filter Members</span>
+            </button>
+
+            <!-- Filter Controls -->
+            <div class="filter-controls" id="filterControls">
+                <div class="filter-label">Filter by:</div>
+                <div class="filter-scroll">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">
+                            <span class="filter-badge">{{ all_members|length }}</span>
+                            <span class="filter-text">All Members</span>
+                        </button>
+                        
+                        <!-- Executive Committee Filter -->
+                        {% if executive_committee %}
+                        <button class="filter-btn" data-filter="executive-committee">
+                            <span class="filter-badge">{{ executive_committee.members.count }}</span>
+                            <span class="filter-text">Executive</span>
+                        </button>
+                        {% endif %}
+                        
+                        <!-- Board of Directors Filter -->
+                        {% if board_of_directors %}
+                        <button class="filter-btn" data-filter="board-directors">
+                            <span class="filter-badge">{{ board_of_directors.members.count }}</span>
+                            <span class="filter-text">Board</span>
+                        </button>
+                        {% endif %}
+                        
+                        <!-- Chapters Filters -->
+                        {% for chapter in chapters %}
+                        <button class="filter-btn" data-filter="chapter-{{ chapter.id }}">
+                            <span class="filter-badge">{{ chapter.members.count }}</span>
+                            <span class="filter-text">{{ chapter.name }}</span>
+                        </button>
+                        {% endfor %}
+                        
+                        <!-- No Chapter Members -->
+                        {% if no_chapter_members %}
+                        <button class="filter-btn" data-filter="no-chapter">
+                            <span class="filter-badge">{{ no_chapter_members|length }}</span>
+                            <span class="filter-text">Unassigned</span>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Panel -->
+            <div class="search-panel">
+                <div class="search-container">
+                    <form class="search-form" autocomplete="off">
+                        <div class="search-input-group">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="search" 
+                                   class="search-input" 
+                                   placeholder="Search by name, role, or chapter..."
+                                   id="searchInput"
+                                   aria-label="Search team members">
+                            <button type="button" 
+                                    class="search-clear" 
+                                    id="searchClear"
+                                    aria-label="Clear search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="search-hints">
+                            <i class="fas fa-lightbulb hint-icon"></i>
+                            <span class="hint-text">
+                                Try: <code class="hint-keyword">leadership</code>, 
+                                <code class="hint-keyword">developer</code>, or 
+                                <code class="hint-keyword">chapter name</code>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Grid -->
+    <section class="team-grid">
+        <div class="results-info">
+            <div class="results-count">
+                <span class="count-number" id="memberCount">{{ all_members|length }}</span>
+                <span class="count-text">members found</span>
+            </div>
+            <button class="clear-filters" id="clearFilters">
+                <i class="fas fa-times"></i>
+                Clear filters
+            </button>
+        </div>
+
+        <!-- All Members Section -->
+        <div class="team-section active" id="all">
+            <!-- Executive Committee Section -->
+            {% if executive_committee %}
+                {% with executive_users=executive_committee.members.all %}
+                {% if executive_users %}
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="section-content">
+                        <h2 class="section-title">Executive Committee</h2>
+                        <p class="section-description">Leading the organization with strategic vision and operational excellence</p>
+                    </div>
+                    <span class="section-badge">{{ executive_users|length }}</span>
+                </div>
+                
+                <div class="members-grid">
+                    {% for user in executive_users %}
+                    {% with membership=user.membership_set.first %}
+                    <div class="member-card" 
+                         data-member 
+                         data-user-id="{{ user.id }}"
+                         data-committee="executive-committee" 
+                         data-chapter="{% if membership.chapter %}chapter-{{ membership.chapter.id }}{% else %}no-chapter{% endif %}">
+                        <div class="card-header">
+                            <div class="member-image">
+                                {% if user.profile_image %}
+                                    <img src="{{ user.profile_image.url }}" 
+                                         alt="{{ user.get_full_name }}"
+                                         loading="lazy">
+                                {% else %}
+                                    <img src="{% static 'assets/img/team/default.jpg' %}"
+                                         alt="{{ user.get_full_name }}"
+                                         loading="lazy">
+                                {% endif %}
+                                <span class="member-badge badge-executive">Executive</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="member-name">
+                                {% if user.get_full_name %}
+                                    {{ user.get_full_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </h3>
+                            <div class="member-positions">
+                                {% with positions=user.positions.all %}
+                                    {% if positions %}
+                                        {% for position in positions %}
+                                            <span class="position-tag">{{ position.name }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="position-tag">{{ user.get_role_display }}</span>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="member-details">
+                                {% if membership.chapter %}
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ membership.chapter.name }}</span>
+                                </div>
+                                {% endif %}
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Executive Committee</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="member-social">
+                                {% if user.email %}
+                                <a href="mailto:{{ user.email }}" 
+                                   class="social-link"
+                                   title="Email {{ user.get_full_name }}">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                {% endif %}
+                                {% if user.phone_number %}
+                                <a href="tel:{{ user.phone_number }}"
+                                   class="social-link"
+                                   title="Call {{ user.get_full_name }}">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                {% endif %}
+                                <a href="#" class="social-link" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            {% endif %}
+
+            <!-- Board of Directors Section -->
+            {% if board_of_directors %}
+                {% with board_users=board_of_directors.members.all %}
+                {% if board_users %}
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <div class="section-content">
+                        <h2 class="section-title">Board of Directors</h2>
+                        <p class="section-description">Providing governance, oversight, and strategic guidance</p>
+                    </div>
+                    <span class="section-badge">{{ board_users|length }}</span>
+                </div>
+                
+                <div class="members-grid">
+                    {% for user in board_users %}
+                    {% with membership=user.membership_set.first %}
+                    <div class="member-card" 
+                         data-member 
+                         data-user-id="{{ user.id }}"
+                         data-committee="board-directors" 
+                         data-chapter="{% if membership.chapter %}chapter-{{ membership.chapter.id }}{% else %}no-chapter{% endif %}">
+                        <div class="card-header">
+                            <div class="member-image">
+                                {% if user.profile_image %}
+                                    <img src="{{ user.profile_image.url }}" 
+                                         alt="{{ user.get_full_name }}"
+                                         loading="lazy">
+                                {% else %}
+                                    <img src="{% static 'assets/img/team/default.jpg' %}"
+                                         alt="{{ user.get_full_name }}"
+                                         loading="lazy">
+                                {% endif %}
+                                <span class="member-badge badge-board">Board</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="member-name">
+                                {% if user.get_full_name %}
+                                    {{ user.get_full_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </h3>
+                            <div class="member-positions">
+                                {% with positions=user.positions.all %}
+                                    {% if positions %}
+                                        {% for position in positions %}
+                                            <span class="position-tag">{{ position.name }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="position-tag">Board Director</span>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="member-details">
+                                {% if membership.chapter %}
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ membership.chapter.name }}</span>
+                                </div>
+                                {% endif %}
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Board of Directors</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="member-social">
+                                {% if user.email %}
+                                <a href="mailto:{{ user.email }}" 
+                                   class="social-link"
+                                   title="Email {{ user.get_full_name }}">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                {% endif %}
+                                <a href="#" class="social-link" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            {% endif %}
+
+            <!-- Chapters Sections -->
+            {% for chapter in chapters %}
+                {% with chapter_members=chapter.members.all %}
+                {% if chapter_members %}
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="section-content">
+                        <h2 class="section-title">{{ chapter.name }} Chapter</h2>
+                        <p class="section-description">
+                            {% if chapter.description %}
+                                {{ chapter.description|truncatewords:30 }}
+                            {% else %}
+                                Local chapter serving our community
+                            {% endif %}
+                        </p>
+                    </div>
+                    <span class="section-badge">{{ chapter_members|length }}</span>
+                </div>
+                
+                <div class="members-grid">
+                    {% for user in chapter_members %}
+                    {% comment %} Get the membership for this user (not all users in chapter may have membership) {% endcomment %}
+                    {% with membership=user.membership_set.first %}
+                    {% if membership and membership.is_active %}
+                    <div class="member-card" 
+                         data-member 
+                         data-user-id="{{ user.id }}"
+                         data-chapter="chapter-{{ chapter.id }}">
+                        <div class="card-header">
+                            <div class="member-image">
+                                {% if user.profile_image %}
+                                    <img src="{{ user.profile_image.url }}" 
+                                         alt="{{ user.get_full_name }}"
+                                         loading="lazy">
+                                {% else %}
+                                    <img src="{% static 'assets/img/team/default.jpg' %}"
+                                         alt="{{ user.get_full_name }}"
+                                         loading="lazy">
+                                {% endif %}
+                                {% comment %} Check if user is a leader {% endcomment %}
+                                {% if user in leaders %}
+                                <span class="member-badge badge-leader">Leader</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="member-name">
+                                {% if user.get_full_name %}
+                                    {{ user.get_full_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </h3>
+                            <div class="member-positions">
+                                {% with positions=user.positions.all %}
+                                    {% if positions %}
+                                        {% for position in positions|slice:":2" %}
+                                            <span class="position-tag">{{ position.name }}</span>
+                                        {% endfor %}
+                                        {% if positions|length > 2 %}
+                                            <span class="position-more"
+                                                  title="{% for position in positions %}{{ position.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                                                +{{ positions|length|add:"-2" }}
+                                            </span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="position-tag">{{ user.get_role_display }}</span>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                            <div class="member-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ chapter.name }}</span>
+                                </div>
+                                {% if user.committees.exists %}
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>
+                                        {% for committee in user.committees.all|slice:":2" %}
+                                            {{ committee.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        {% if user.committees.count > 2 %}...{% endif %}
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="member-social">
+                                {% if user.email %}
+                                <a href="mailto:{{ user.email }}" 
+                                   class="social-link"
+                                   title="Email {{ user.get_full_name }}">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                {% endif %}
+                                {% if user.phone_number %}
+                                <a href="tel:{{ user.phone_number }}"
+                                   class="social-link"
+                                   title="Call {{ user.get_full_name }}">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                {% endif %}
+                                <a href="#" class="social-link" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            {% endfor %}
+
+            <!-- Leaders Section -->
+            {% if leaders %}
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">Chapter Leaders</h2>
+                    <p class="section-description">Leading our local chapters with dedication and vision</p>
+                </div>
+                <span class="section-badge">{{ leaders|length }}</span>
+            </div>
+            
+            <div class="members-grid">
+                {% for membership in leaders %}
+                {% with user=membership.user %}
+                <div class="member-card" 
+                     data-member 
+                     data-user-id="{{ user.id }}"
+                     data-chapter="{% if membership.chapter %}chapter-{{ membership.chapter.id }}{% else %}no-chapter{% endif %}">
+                    <div class="card-header">
+                        <div class="member-image">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" 
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <img src="{% static 'assets/img/team/default.jpg' %}"
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% endif %}
+                            <span class="member-badge badge-leader">Leader</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="member-name">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </h3>
+                        <div class="member-positions">
+                            {% with positions=user.positions.all %}
+                                {% if positions %}
+                                    {% for position in positions|slice:":2" %}
+                                        <span class="position-tag">{{ position.name }}</span>
+                                    {% endfor %}
+                                    {% if positions|length > 2 %}
+                                        <span class="position-more"
+                                              title="{% for position in positions %}{{ position.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                                            +{{ positions|length|add:"-2" }}
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="position-tag">{{ user.get_role_display }}</span>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="member-details">
+                            {% if membership.chapter %}
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ membership.chapter.name }}</span>
+                            </div>
+                            {% endif %}
+                            {% if user.committees.exists %}
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>
+                                    {% for committee in user.committees.all|slice:":2" %}
+                                        {{ committee.name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if user.committees.count > 2 %}...{% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="member-social">
+                            {% if user.email %}
+                            <a href="mailto:{{ user.email }}" 
+                               class="social-link"
+                               title="Email {{ user.get_full_name }}">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {% endif %}
+                            {% if user.phone_number %}
+                            <a href="tel:{{ user.phone_number }}"
+                               class="social-link"
+                               title="Call {{ user.get_full_name }}">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Regular Members Section -->
+            {% if regular_members %}
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">All Members</h2>
+                    <p class="section-description">Dedicated individuals driving our organization forward</p>
+                </div>
+                <span class="section-badge">{{ regular_members|length }}</span>
+            </div>
+            
+            <div class="members-grid">
+                {% for membership in regular_members %}
+                {% with user=membership.user %}
+                <div class="member-card" 
+                     data-member 
+                     data-user-id="{{ user.id }}"
+                     data-chapter="{% if membership.chapter %}chapter-{{ membership.chapter.id }}{% else %}no-chapter{% endif %}">
+                    <div class="card-header">
+                        <div class="member-image">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" 
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <img src="{% static 'assets/img/team/default.jpg' %}"
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="member-name">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </h3>
+                        <div class="member-positions">
+                            <span class="position-tag">{{ user.get_role_display }}</span>
+                        </div>
+                        <div class="member-details">
+                            {% if membership.chapter %}
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ membership.chapter.name }}</span>
+                            </div>
+                            {% endif %}
+                            {% if user.committees.exists %}
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>
+                                    {% for committee in user.committees.all|slice:":2" %}
+                                        {{ committee.name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if user.committees.count > 2 %}...{% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="member-social">
+                            {% if user.email %}
+                            <a href="mailto:{{ user.email }}" 
+                               class="social-link"
+                               title="Email {{ user.get_full_name }}">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Standalone Executive Committee Section -->
+        {% if executive_committee %}
+        <div class="team-section" id="executive-committee">
+            {% with executive_users=executive_committee.members.all %}
+            {% if executive_users %}
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">Executive Committee</h2>
+                    <p class="section-description">Leading the organization with strategic vision and operational excellence</p>
+                </div>
+                <span class="section-badge">{{ executive_users|length }}</span>
+            </div>
+            
+            <div class="members-grid">
+                {% for user in executive_users %}
+                {% with membership=user.membership_set.first %}
+                <div class="member-card" data-member data-user-id="{{ user.id }}">
+                    <div class="card-header">
+                        <div class="member-image">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" 
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <img src="{% static 'assets/img/team/default.jpg' %}"
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% endif %}
+                            <span class="member-badge badge-executive">Executive</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="member-name">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </h3>
+                        <div class="member-positions">
+                            {% with positions=user.positions.all %}
+                                {% if positions %}
+                                    {% for position in positions %}
+                                        <span class="position-tag">{{ position.name }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="position-tag">{{ user.get_role_display }}</span>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="member-details">
+                            {% if membership.chapter %}
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ membership.chapter.name }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>Executive Committee</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="member-social">
+                            {% if user.email %}
+                            <a href="mailto:{{ user.email }}" 
+                               class="social-link"
+                               title="Email {{ user.get_full_name }}">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {% endif %}
+                            {% if user.phone_number %}
+                            <a href="tel:{{ user.phone_number }}"
+                               class="social-link"
+                               title="Call {{ user.get_full_name }}">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        {% endif %}
+
+        <!-- Standalone Board of Directors Section -->
+        {% if board_of_directors %}
+        <div class="team-section" id="board-directors">
+            {% with board_users=board_of_directors.members.all %}
+            {% if board_users %}
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">Board of Directors</h2>
+                    <p class="section-description">Providing governance, oversight, and strategic guidance</p>
+                </div>
+                <span class="section-badge">{{ board_users|length }}</span>
+            </div>
+            
+            <div class="members-grid">
+                {% for user in board_users %}
+                {% with membership=user.membership_set.first %}
+                <div class="member-card" data-member data-user-id="{{ user.id }}">
+                    <div class="card-header">
+                        <div class="member-image">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" 
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <img src="{% static 'assets/img/team/default.jpg' %}"
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% endif %}
+                            <span class="member-badge badge-board">Board</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="member-name">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </h3>
+                        <div class="member-positions">
+                            {% with positions=user.positions.all %}
+                                {% if positions %}
+                                    {% for position in positions %}
+                                        <span class="position-tag">{{ position.name }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="position-tag">Board Director</span>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="member-details">
+                            {% if membership.chapter %}
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ membership.chapter.name }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>Board of Directors</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="member-social">
+                            {% if user.email %}
+                            <a href="mailto:{{ user.email }}" 
+                               class="social-link"
+                               title="Email {{ user.get_full_name }}">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        {% endif %}
+
+        <!-- Chapter-specific Sections -->
+        {% for chapter in chapters %}
+        <div class="team-section" id="chapter-{{ chapter.id }}">
+            {% with chapter_members=chapter.members.all %}
+            {% if chapter_members %}
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">{{ chapter.name }} Chapter</h2>
+                    <p class="section-description">
+                        {% if chapter.description %}
+                            {{ chapter.description|truncatewords:30 }}
+                        {% else %}
+                            Local chapter serving our community
+                        {% endif %}
+                    </p>
+                </div>
+                <span class="section-badge">{{ chapter_members|length }}</span>
+            </div>
+            
+            <div class="members-grid">
+                {% for user in chapter_members %}
+                {% with membership=user.membership_set.first %}
+                {% if membership and membership.is_active %}
+                <div class="member-card" data-member data-user-id="{{ user.id }}">
+                    <div class="card-header">
+                        <div class="member-image">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" 
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <img src="{% static 'assets/img/team/default.jpg' %}"
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% endif %}
+                            {% if user in leaders %}
+                            <span class="member-badge badge-leader">Leader</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="member-name">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </h3>
+                        <div class="member-positions">
+                            {% with positions=user.positions.all %}
+                                {% if positions %}
+                                    {% for position in positions|slice:":2" %}
+                                        <span class="position-tag">{{ position.name }}</span>
+                                    {% endfor %}
+                                    {% if positions|length > 2 %}
+                                        <span class="position-more"
+                                              title="{% for position in positions %}{{ position.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                                            +{{ positions|length|add:"-2" }}
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="position-tag">{{ user.get_role_display }}</span>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="member-details">
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ chapter.name }}</span>
+                            </div>
+                            {% if user.committees.exists %}
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>
+                                    {% for committee in user.committees.all|slice:":2" %}
+                                        {{ committee.name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if user.committees.count > 2 %}...{% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="member-social">
+                            {% if user.email %}
+                            <a href="mailto:{{ user.email }}" 
+                               class="social-link"
+                               title="Email {{ user.get_full_name }}">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {% endif %}
+                            {% if user.phone_number %}
+                            <a href="tel:{{ user.phone_number }}"
+                               class="social-link"
+                               title="Call {{ user.get_full_name }}">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endwith %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        {% endfor %}
+
+        <!-- Unassigned Members Section -->
+        {% if no_chapter_members %}
+        <div class="team-section" id="no-chapter">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">Unassigned Members</h2>
+                    <p class="section-description">Members awaiting chapter assignment</p>
+                </div>
+                <span class="section-badge">{{ no_chapter_members|length }}</span>
+            </div>
+            <div class="members-grid">
+                {% for membership in no_chapter_members %}
+                {% with user=membership.user %}
+                <div class="member-card" data-member data-user-id="{{ user.id }}">
+                    <div class="card-header">
+                        <div class="member-image">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" 
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <img src="{% static 'assets/img/team/default.jpg' %}"
+                                     alt="{{ user.get_full_name }}"
+                                     loading="lazy">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="member-name">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </h3>
+                        <div class="member-positions">
+                            <span class="position-tag">{{ user.get_role_display }}</span>
+                        </div>
+                        <div class="member-details">
+                            {% if user.committees.exists %}
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>
+                                    {% for committee in user.committees.all|slice:":2" %}
+                                        {{ committee.name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if user.committees.count > 2 %}...{% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="member-social">
+                            {% if user.email %}
+                            <a href="mailto:{{ user.email }}" 
+                               class="social-link"
+                               title="Email {{ user.get_full_name }}">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {% endif %}
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const filterToggle = document.getElementById('filterToggle');
+    const filterControls = document.getElementById('filterControls');
+    const searchInput = document.getElementById('searchInput');
+    const searchClear = document.getElementById('searchClear');
+    const clearFilters = document.getElementById('clearFilters');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const teamSections = document.querySelectorAll('.team-section');
+    const memberCards = document.querySelectorAll('[data-member]');
+    const memberCount = document.getElementById('memberCount');
+
+    // Mobile Filter Toggle
+    filterToggle.addEventListener('click', () => {
+        filterControls.classList.toggle('active');
+    });
+
+    // Search Functionality
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const searchTerm = this.value.toLowerCase().trim();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            let visibleCount = 0;
+
+            memberCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                const matchesSearch = searchTerm === '' || cardText.includes(searchTerm);
+                const matchesFilter = activeFilter === 'all' ||
+                                     card.dataset.chapter === activeFilter ||
+                                     card.dataset.committee === activeFilter;
+                
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            memberCount.textContent = visibleCount;
+            searchClear.style.display = searchTerm ? 'block' : 'none';
+        }, 300);
+    });
+
+    // Clear Search
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchInput.focus();
+        searchClear.style.display = 'none';
+        searchInput.dispatchEvent(new Event('input'));
+    });
+
+    // Filter Functionality
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Show/hide sections
+            teamSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === filter || (filter === 'all' && section.id === 'all')) {
+                    section.classList.add('active');
+                }
+            });
+            
+            // Update card visibility
+            memberCards.forEach(card => {
+                if (filter === 'all') {
+                    card.style.display = 'flex';
+                } else if (card.dataset.chapter === filter || card.dataset.committee === filter) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update count
+            const visibleCards = document.querySelectorAll('[data-member][style*="flex"]');
+            memberCount.textContent = visibleCards.length;
+            
+            // Close mobile filters if open
+            if (window.innerWidth < 768) {
+                filterControls.classList.remove('active');
+            }
+            
+            // Smooth scroll to section
+            if (filter !== 'all') {
+                const targetSection = document.getElementById(filter);
+                if (targetSection) {
+                    setTimeout(() => {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            }
+        });
+    });
+
+    // Clear Filters
+    clearFilters.addEventListener('click', () => {
+        const allButton = document.querySelector('.filter-btn[data-filter="all"]');
+        if (allButton) allButton.click();
+        searchInput.value = '';
+        searchClear.style.display = 'none';
+        searchInput.dispatchEvent(new Event('input'));
+    });
+
+    // Initialize from URL hash
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        const filterButton = document.querySelector(`.filter-btn[data-filter="${hash}"]`);
+        if (filterButton) {
+            filterButton.click();
+        }
+    }
+
+    // Close filters when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth < 768 && 
+            !filterControls.contains(e.target) && 
+            !filterToggle.contains(e.target) &&
+            filterControls.classList.contains('active')) {
+            filterControls.classList.remove('active');
+        }
+    });
+});
+</script>
+{% endblock %}

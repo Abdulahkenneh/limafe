@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Signup{% endblock %}
+
+{% block meta_description %}Description for Signup page on LIMAFE website.{% endblock %}
+
+{% block meta_keywords %}limafe, signup{% endblock %}
+
+{% block content %}
+
+<!-- popup search -->
+<div class="search-popup">
+    <button class="close-search"><span class="far fa-times"></span></button>
+    <form action="#">
+        <div class="form-group">
+            <input type="search" name="search-field" placeholder="Search Here..." required>
+            <button type="submit"><i class="far fa-search"></i></button>
+        </div>
+    </form>
+</div>
+<!-- popup search end -->
+
+<main class="main">
+    <!-- breadcrumb -->
+    <div class="site-breadcrumb" style="background: url({% static 'assets/img/breadcrumb/members.webp' %})">
+        <div class="container">
+            <h2 class="breadcrumb-title">Signup</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Signup</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- signup area -->
+    <div class="login-area py-120">
+        <div class="container">
+            <div class="col-md-8 mx-auto">
+                <div class="login-form">
+                    <div class="login-header mb-4">
+                        <h3 class="mb-2">Create your LIMAFE account</h3>
+                        <p class="text-muted">Join our community today</p>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Please fix the following errors:</strong>
+                        <ul class="mb-0">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ field.label }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+
+                    {% if form %}
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <!-- Username -->
+                            <div class="col-md-12 mb-3">
+                                <div class="form-group">
+                                    <label for="{{ form.username.id_for_label }}" class="form-label">
+                                        {{ form.username.label }}
+                                        {% if form.username.field.required %}<span class="text-danger">*</span>{% endif %}
+                                    </label>
+                                    {{ form.username }}
+                                    {% if form.username.help_text %}
+                                        <div class="form-text">{{ form.username.help_text }}</div>
+                                    {% endif %}
+                                    <div class="invalid-feedback">
+                                        {{ form.username.errors|first }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-12 mb-3">
+                                <div class="form-group">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                                        {{ form.email.label }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.email }}
+                                    <div class="invalid-feedback">
+                                        {{ form.email.errors|first }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Password 1 -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="{{ form.password1.id_for_label }}" class="form-label">
+                                        Password
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.password1 }}
+                                    {% if form.password1.help_text %}
+                                        <div class="form-text small">
+                                            {{ form.password1.help_text|safe }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="invalid-feedback">
+                                        {{ form.password1.errors|first }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Password 2 -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="{{ form.password2.id_for_label }}" class="form-label">
+                                        Confirm Password
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.password2 }}
+                                    <div class="invalid-feedback">
+                                        {{ form.password2.errors|first }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="col-md-12 mb-3">
+                                <div class="form-group">
+                                    <label for="{{ form.phone_number.id_for_label }}" class="form-label">
+                                        {{ form.phone_number.label }}
+                                    </label>
+                                    {{ form.phone_number }}
+                                    <div class="invalid-feedback">
+                                        {{ form.phone_number.errors|first }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="col-md-12 mb-4">
+                                <div class="form-group">
+                                    <label for="{{ form.address.id_for_label }}" class="form-label">
+                                        {{ form.address.label }}
+                                    </label>
+                                    {{ form.address }}
+                                    <div class="invalid-feedback">
+                                        {{ form.address.errors|first }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mt-4">
+                            <button type="submit" class="theme-btn">
+                                <i class="far fa-user-plus me-2"></i> Create Account
+                            </button>
+                        </div>
+                         <a href="{% url 'login' %}" class="text-primary">Already have an account?</a>
+
+                    </form>
+                    {% endif %}
+
+                    <div class="login-footer mt-4 pt-3 border-top">
+                        <p class="text-center text-muted mb-0">
+                            By signing up, you agree to our
+                            <a href="#" class="text-decoration-underline">Terms</a> and
+                            <a href="#" class="text-decoration-underline">Privacy Policy</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- signup area end -->
+</main>
+
+<style>
+/* Additional styling for modern look */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 12px 15px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.login-form {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+}
+
+.login-header h3 {
+    color: #333;
+    font-weight: 600;
+}
+
+.invalid-feedback {
+    display: block;
+    font-size: 14px;
+}
+
+.form-text {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.theme-btn {
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.theme-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .login-form {
+        padding: 30px 20px;
+    }
+    .col-md-6.mx-auto {
+        max-width: 100%;
+    }
+}
+</style>
+
+<script>
+// Add real-time validation
+document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('.needs-validation');
+
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+
+    // Add input event listeners for real-time validation
+    const inputs = document.querySelectorAll('.form-control');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            this.classList.remove('is-invalid');
+            this.classList.remove('is-valid');
+
+            if (this.value.trim() !== '') {
+                if (this.checkValidity()) {
+                    this.classList.add('is-valid');
+                } else {
+                    this.classList.add('is-invalid');
+                }
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

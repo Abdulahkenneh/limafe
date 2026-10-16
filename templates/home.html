@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static humanize %}
+
+{% block content %}
+
+<!-- preloader -->
+<div class="preloader">
+    <div class="loader"><div></div><div></div><div></div><div></div></div>
+</div>
+<!-- preloader end -->
+
+<!-- popup search -->
+<div class="search-popup">
+    <button class="close-search"><span class="far fa-times"></span></button>
+    <form action="#">
+        <div class="form-group">
+            <input type="search" name="search-field" placeholder="Search Here..." required>
+            <button type="submit"><i class="far fa-search"></i></button>
+        </div>
+    </form>
+</div>
+<!-- popup search end -->
+
+<main class="main container">
+
+    <!-- hero slider -->
+    <div class="hero-section">
+        <div class="hero-slider owl-carousel owl-theme">
+            {% if hero_sliders %}
+                {% for slider in hero_sliders %}
+                    <div class="hero-single" style="background: url({{ slider.image.url }})">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="hero-content">
+                                        <h6 class="hero-sub-title wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay=".25s"><i class="far fa-heart"></i> {{ slider.sub_title|default:"Unity & Cultural Preservation" }}</h6>
+                                        <h1 class="hero-title wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay=".50s"> {{ slider.title|default:"Preserving Mandingo Tradition in Arizona" }} {% if slider.title_highlight %}<span>{{ slider.title_highlight }}</span>{% endif %} {{ slider.title_suffix|default:"" }} </h1>
+                                        <p class="wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay=".75s"> {{ slider.description|default:"The Arizona Mandingo Association (AZMA) unites Mandingos across Arizona to promote our tradition, advance our identity, and support the welfare of our community through cooperation, mutual respect, and democratic participation." }} </p>
+                                        <div class="hero-btn wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay="1s">
+                                            <a href="{% url 'about-us' %}" class="theme-btn">About More<i class="fas fa-circle-arrow-right"></i></a>
+                                            <a href="{% url 'membership_create' %}" class="theme-btn theme-btn2">Become a Member<i class="fas fa-circle-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- fallback static sliders if no Slider model instance exists -->
+                <div class="hero-single">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="hero-content">
+                                    <h6 class="hero-sub-title wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay=".25s"><i class="far fa-heart"></i> Unity & Cultural Preservation</h6>
+                                    <h1 class="hero-title wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay=".50s">Preserving Mandingo Tradition in Arizona</h1>
+                                    <p class="wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay=".75s">The Arizona Mandingo Association (AZMA) unites Mandingos across Arizona to promote our tradition, advance our identity, and support the welfare of our community through cooperation, mutual respect, and democratic participation.</p>
+                                    <div class="hero-btn wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay="1s">
+                                        <a href="{% url 'about-us' %}" class="theme-btn">About More<i class="fas fa-circle-arrow-right"></i></a>
+                                        <a href="{% url 'membership_create' %}" class="theme-btn theme-btn2">Become a Member<i class="fas fa-circle-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- hero slider end -->
+
+    <!-- feature area -->
+    <div class="feature-area py-120">
+        <div class="container">
+            <div class="feature-wrapper">
+                <div class="row">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="flaticon-care"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Make Donation / Pay Dues</h4>
+                                <p>Your contributions and membership dues support our initiatives for cultural preservation, member welfare, education, and community assistance in Arizona.</p>
+                                <a href="{% url 'donation_list' %}" class="border-btn">Contribute Now <i class="fas fa-circle-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="flaticon-volunteer-2"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Become a Member / Volunteer</h4>
+                                <p>Join AZMA, participate in committees and elections, and help foster unity and mutual understanding among Mandingos in Arizona.</p>
+                                <a href="{% url 'membership_create' %}" class="border-btn">Join Now <i class="fas fa-circle-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="flaticon-heart-2"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Our Committees & Activities</h4>
+                                <p>Discover our Activities and Fundraising Committees, and the programs that promote social, cultural, and economic ties for Mandingos in Arizona.</p>
+                                <a href="{% url 'project_list' %}" class="border-btn">View All <i class="fas fa-circle-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- feature area end -->
+
+    <!-- about area -->
+    <div class="about-area mb-50 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                    <div class="about-left">
+                        <div class="about-img">
+                            <img class="about-img-1" src="{% static 'assets/img/about/membership1.jpg' %}" alt="">
+                            <img class="about-img-2" src="{% static 'assets/img/about/membership2.jpg' %}" alt="">
+                        </div>
+                        <div class="about-shape"><img src="{% static 'assets/img/about/membership.avif' %}" alt=""></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-right">
+                        <div class="site-heading mb-3">
+                            <span class="site-title-tagline"><i class="far fa-heart"></i> About Us</span>
+                            <h2 class="site-title"> {{ about_page.title|default:"Advancing the Identity and Welfare of the <span>Mandingo Community in Arizona</span>" }} </h2>
+                        </div>
+                        <p class="about-text"> {{ about_page.content|default:"We, the members of the Arizona Mandingo Association, wishing to secure for ourselves the benefit of an association of persons commonly interested in our shared heritage, constitute ourselves AZMA to further the exchange of information and cooperation between members, to promote Mandingo tradition and its universal tolerant and peaceful values in the United States of America and our native lands."|safe }} </p>
+                        <div class="about-list-wrapper">
+                            <ul class="about-list list-unstyled">
+                                <li>Promoting Mandingo tradition and peaceful values</li>
+                                <li>Advancing the identity and general interest of the Mandingo community</li>
+                                <li>Contributing peacefully and democratically to the diversity of our community</li>
+                            </ul>
+                        </div>
+                        <a href="{% url 'about-us' %}" class="theme-btn mt-4">Discover More <i class="fas fa-circle-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- about area end -->
+
+    <!-- donation/campaign area -->
+    <div class="donation-area bg py-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <div class="site-heading text-center">
+                        <span class="site-title-tagline"> <i class="far fa-heart"></i> Fundraising & Community Support </span>
+                        <h2 class="site-title"> Supporting Mandingo <span>Families in Arizona</span> </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for campaign in campaigns %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="donation-item">
+                            <div class="donation-img">
+                                <img src="{% if campaign.featured_image %}{{ campaign.featured_image.url }}{% else %}{% endif %}" alt="{{ campaign.title }}" >
+                            </div>
+                            <div class="donation-content">
+                                <h3 class="donation-title"> <a href="{% url 'project_detail' campaign.id %}"> {{ campaign.title }} </a> </h3>
+                                <p class="donation-text"> {{ campaign.description|default:"Advancing welfare, cultural, and mutual assistance initiatives for Mandingos in Arizona." }} </p>
+                                <div class="donation-progress">
+                                    <div class="progress-box">
+                                        <span class="progress-percent"> {% widthratio campaign.raised_amount campaign.goal_amount 100 %}% </span>
+                                        <div class="progress" data-value="{% widthratio campaign.raised_amount campaign.goal_amount 100 %}">
+                                            <div class="progress-bar" role="progressbar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="donation-goal">
+                                        <p> <span>${{ campaign.raised_amount|floatformat:0|intcomma }}</span> Raised </p>
+                                        <p> <span>${{ campaign.goal_amount|floatformat:0|intcomma }}</span> Goal </p>
+                                    </div>
+                                </div>
+                                <div class="donation-footer">
+                                    <div class="donation-date">
+                                        <span class="donation-date-day"> {{ campaign.deadline|date:"d" }} </span>
+                                        <span class="donation-date-month"> {{ campaign.deadline|date:"M" }} </span>
+                                    </div>
+                                    <a href="{% url 'donation_list' %}?campaign={{ campaign.id }}" class="theme-btn" > Donate Now <i class="fas fa-circle-arrow-right"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No active campaigns available.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- donation-area end -->
+
+    <!-- mission area -->
+    <div class="mission-area py-120">
+        <h2 class="site-title"> Achieving Greater Impact With <span>Your Participation</span> </h2>
+        <p> As a member-driven association, we encourage active involvement in our committees, elections, meetings, and initiatives to preserve Mandingo values and support our community in Arizona. </p>
+        <div class="mission-item">
+            <h4>Social Affairs & Cultural Promotion</h4>
+            <p>We organize events and programs to foster understanding and preserve Mandingo tradition and culture in Arizona.</p>
+        </div>
+        <div class="mission-item">
+            <h4>Membership Benefits & Mutual Support</h4>
+            <p>We provide death-related support, baby naming ceremony assistance, education recognition, and marriage contributions to members in good standing.</p>
+        </div>
+    </div>
+
+    <!-- counter area -->
+    <div class="counter-area pt-80 pb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="counter-box">
+                        <div class="icon"><i class="flaticon-donation-2"></i></div>
+                        <div>
+                            <span class="counter" data-count="+" data-to="{{ project_count }}">{{ project_count|default:50 }}</span>
+                            <h6 class="title">+ Projects & Activities</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="counter-box">
+                        <div class="icon"><i class="flaticon-donation-1"></i></div>
+                        <div>
+                            <span class="counter" data-count="+" data-to="{{ member_count }}">{{ member_count|default:200 }}</span>
+                            <h6 class="title">+ Members in Arizona</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="counter-box">
+                        <div class="icon"><i class="flaticon-team"></i></div>
+                        <div>
+                            <span class="counter" data-count="+" data-to="{{ volunteer_count }}">{{ volunteer_count|default:30 }}</span>
+                            <h6 class="title">+ Active Volunteers</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="counter-box">
+                        <div class="icon"><i class="flaticon-trophy-1"></i></div>
+                        <div>
+                            <span class="counter" data-count="+" data-to="{{ chapter_count }}">{{ chapter_count|default:4 }}</span>
+                            <h6 class="title">+ Committees & Chapters</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- team/leadership area -->
+    <div class="team-area bg pt-120 pb-50">
+        <h2 class="site-title">Meet Our <span>Executive Committee</span></h2>
+
+        <!-- Check if there are positions -->
+        {% if leadership_positions %}
+        <div class="row mt-5">
+            {% for position in leadership_positions %}
+
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="team-item">
+                        <div class="team-img">
+                            <!-- Profile link - check if holder exists -->
+                            {% if position.holder %}
+                                <a href="{% url 'user-profile' position.holder.uuid %}">
+                            {% else %}
+                                <a href="#">
+                            {% endif %}
+
+                            {% if position.holder and position.holder.profile_image %}
+                             <a href="{% url 'user-profile' position.holder.uuid %}">
+                                <img src="{{ position.holder.profile_image.url }}"
+                                     alt="{{ position.holder.get_full_name|default:position.holder.username }}"
+                                     class="img-fluid">
+                            </a>
+                            {% else %}
+                                <img src="{% static 'assets/img/default-profile.png' %}"
+                                     alt="Default Profile"
+                                     class="img-fluid">
+                            {% endif %}
+                            </a>
+                        </div>
+
+                        <div class="team-content">
+                            <div class="team-bio">
+                                <!-- Name with link if holder exists -->
+                                <h5>
+                                    {% if position.holder %}
+                                        <a href="{% url 'user-profile' position.holder.uuid %}">
+                                            {{ position.holder.get_full_name|default:position.holder.username }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Vacant Position</span>
+                                    {% endif %}
+                                </h5>
+
+                                <!-- Position title and committee -->
+                                <span>
+                                    <strong>{{ position.name }}</strong>
+                                    {% if position.committee %}
+                                        <br>
+                                        <small>{{ position.committee.name }}</small>
+                                    {% endif %}
+
+                                    <!-- Term dates if available -->
+                                    {% if position.term_start and position.term_end %}
+                                        <br>
+                                        <small class="text-muted">
+                                            Term: {{ position.term_start|date:"M Y" }} - {{ position.term_end|date:"M Y" }}
+                                        </small>
+                                    {% elif position.term_start %}
+                                        <br>
+                                        <small class="text-muted">
+                                            Since {{ position.term_start|date:"M Y" }}
+                                        </small>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Social links (optional - you can keep or remove) -->
+                        <div class="team-social">
+                            {% if position.holder %}
+                                {% comment %}
+                                <!-- Example social links structure -->
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                {% endcomment %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <!-- No positions message -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <h4>No Executive Committee members at the moment</h4>
+                    <p>Check back soon for updates on our leadership team.</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <!-- gallery-area -->
+    <div class="gallery-area py-120">
+        <h2 class="site-title">Recent <span>Activities & Events</span> Gallery</h2>
+        <div class="row popup-gallery">
+            {% for media in gallery_medias %}
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <div class="gallery-img">
+                            <img src="{{ media.file.url }}" alt="{{ media.alt_text }}">
+                        </div>
+                        <div class="gallery-content">
+                            <a class="popup-img gallery-link" href="{{ media.file.url }}"><i class="far fa-plus"></i></a>
+                            <div class="gallery-info">
+                                <h4 class="gallery-title">{{ media.alt_text|default:"Our Work" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- cta-area -->
+    <div class="cta-area pt-80 pb-80">
+        <h1 style="color:white">We Are Preserving Mandingo Values <span>Together</span> Through Your Support</h1>
+        <p>Your membership, dues, and participation enable us to promote our tradition, support our members, and advance the welfare of the Mandingo community in Arizona.</p>
+    </div>
+
+    <!-- event-area -->
+    <div class="event-area py-120">
+        <h2 class="site-title">Upcoming <span>Meetings & Events</span></h2>
+        <div class="row">
+            {% for event in upcoming_events %}
+                <div class="col-md-6">
+                    <div class="event-item">
+                        <div class="event-img">
+                            {% if event.image and event.image.url %}
+                                <img src="{{event.image.url}}" alt="">
+                            {% endif %}
+                        </div>
+                        <div class="event-content">
+                            <div class="event-meta">
+                                <ul>
+                                    <li><i class="far fa-calendar-alt"></i>{{ event.start_time|date:"d M Y" }}</li>
+                                    <li><i class="far fa-location-dot"></i>{{ event.location|default:"TBA" }}</li>
+                                </ul>
+                            </div>
+                            <h4 class="event-title"><a href="{% url 'event_detail' event.id %}">{{ event.title }}</a></h4>
+                            <p>{{ event.description|truncatewords:20 }}</p>
+                            <a href="{% url 'event_detail' event.id %}" class="theme-btn">Join Now<i class="fas fa-circle-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- blog-area -->
+    <div class="blog-area py-120">
+        <h2 class="site-title">Latest <span>News & Updates</span></h2>
+        <div class="row">
+            {% for post in latest_posts %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="blog-item">
+                        <div class="blog-item-img">
+                            <img src="{{ post.featured_image.url }}" alt="">
+                        </div>
+                        <div class="blog-item-info">
+                            <h4 class="blog-title"> <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a> </h4>
+                            <div class="blog-item-meta">
+                                <ul>
+                                    <li><i class="far fa-user-circle"></i> {{ post.author.get_full_name|default:"Admin" }}</li>
+                                    <li><i class="far fa-calendar-alt"></i> {{ post.created_at|date:"M d, Y" }}</li>
+                                </ul>
+                            </div>
+                            <p>{{ post.content|safe|truncatewords:30 }}</p>
+                            <a class="theme-btn" href="{% url 'post_detail' post.id %}">Read More<i class="fas fa-circle-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</main>
+
+<!-- scroll-top -->
+<a href="#" id="scroll-top"><i class="far fa-arrow-up"></i></a>
+
+{% endblock content %}

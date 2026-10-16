@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Donate{% endblock %}
+
+{% block meta_description %}
+Support LIMAFI with your donation.
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5" style="max-width: 600px;">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h2 class="mb-4 text-center">Make a Donation</h2>
+
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="post" id="donation-form">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Amount (€)</label>
+                    {{ form.amount }}
+                </div>
+
+                <!-- Stripe injects token here -->
+                <input type="hidden" name="stripeToken" id="stripeToken">
+
+                <button type="submit" class="btn btn-success w-100">
+                    Donate Now
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

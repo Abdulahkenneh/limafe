@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Page Form{% endblock %}
+
+{% block meta_description %}Description for Page Form page on LIMAFI website.{% endblock %}
+
+{% block meta_keywords %}limafi, page, form{% endblock %}
+
+{% block content %}
+    <h1>Page Form</h1>
+    <!-- Add your content here -->
+    {% if form %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    {% endif %}
+    {% if object_list %}
+        <ul>
+            {% for obj in object_list %}
+                <li>{{ obj }}</li>
+            {% endfor %}
+        </ul>
+    {% elif object %}
+        <p>{{ object }}</p>
+    {% endif %}
+{% endblock %}

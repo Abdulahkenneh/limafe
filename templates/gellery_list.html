@@ -1,0 +1,336 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- popup search -->
+    <div class="search-popup">
+        <button class="close-search"><span class="far fa-times"></span></button>
+        <form action="#">
+            <div class="form-group">
+                <input type="search" name="search-field" placeholder="Search Here..." required>
+                <button type="submit"><i class="far fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <!-- popup search end -->
+
+    <main class="main">
+
+        <!-- breadcrumb -->
+        <div class="site-breadcrumb" style="background: url({% static 'assets/img/breadcrumb/01.jpg' %})">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="breadcrumb-title">Gallery</h2>
+                        <ul class="breadcrumb-menu">
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li class="active">Gallery</li>
+                        </ul>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'media_upload' %}" class="btn btn-primary">
+                        Upload Media
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- gallery-area -->
+        <div class="gallery-area py-120">
+            <div class="container">
+
+                <!-- Chapter Tabs -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="gallery-tabs">
+                            <ul class="nav nav-tabs justify-content-center" id="chapterTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab"
+                                            data-bs-target="#all" type="button" role="tab"
+                                            aria-controls="all" aria-selected="true">
+                                        All Media
+                                    </button>
+                                </li>
+                                {% for chapter in chapters %}
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="chapter-{{ chapter.id }}-tab"
+                                            data-bs-toggle="tab" data-bs-target="#chapter-{{ chapter.id }}"
+                                            type="button" role="tab"
+                                            aria-controls="chapter-{{ chapter.id }}"
+                                            aria-selected="false">
+                                        {{ chapter.name }}
+                                    </button>
+                                </li>
+                                {% endfor %}
+                                {% if no_chapter_media %}
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="no-chapter-tab" data-bs-toggle="tab"
+                                            data-bs-target="#no-chapter" type="button" role="tab"
+                                            aria-controls="no-chapter" aria-selected="false">
+                                        Uncategorized
+                                    </button>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Content -->
+                <div class="tab-content" id="chapterTabContent">
+
+                    <!-- All Media Tab -->
+                    <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                        <div class="row popup-gallery">
+                            {% if media_list %}
+                                {% for media in media_list %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="gallery-item">
+                                        <div class="gallery-img">
+                                            {% if media.file.url|lower|slice:'-4:' == '.jpg' or media.file.url|lower|slice:'-5:' == '.jpeg' or media.file.url|lower|slice:'-4:' == '.png' or media.file.url|lower|slice:'-4:' == '.gif' %}
+                                                <img src="{{ media.file.url }}" alt="{{ media.alt_text|default:'Gallery Image' }}">
+                                            {% elif media.file.url|lower|slice:'-4:' == '.mp4' or media.file.url|lower|slice:'-4:' == '.avi' or media.file.url|lower|slice:'-5:' == '.mov' or media.file.url|lower|slice:'-4:' == '.wmv' %}
+                                                <video class="gallery-video" muted>
+                                                    <source src="{{ media.file.url }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                                <div class="video-overlay">
+                                                    <i class="fas fa-play"></i>
+                                                </div>
+                                            {% else %}
+                                                <div class="file-icon">
+                                                    <i class="fas fa-file-alt fa-3x"></i>
+                                                    <p>{{ media.file.name|slice:'-15:' }}</p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="gallery-content">
+                                            {% if media.file.url|lower|slice:'-4:' == '.jpg' or media.file.url|lower|slice:'-5:' == '.jpeg' or media.file.url|lower|slice:'-4:' == '.png' or media.file.url|lower|slice:'-4:' == '.gif' %}
+                                                <a class="popup-img gallery-link" href="{{ media.file.url }}"
+                                                   data-lightbox="gallery-all" data-title="{{ media.alt_text|default:'' }}">
+                                                    <i class="far fa-plus"></i>
+                                                </a>
+                                            {% endif %}
+                                            <div class="gallery-info">
+                                                <h4 class="gallery-title">
+                                                    {{ media.alt_text|default:"Media File"|truncatechars:30 }}
+                                                </h4>
+                                                <div class="gallery-meta">
+                                                    <small class="text-muted">
+                                                        {% if media.chapter %}
+                                                        <span class="badge bg-info">{{ media.chapter.name }}</span>
+                                                        {% endif %}
+                                                        {% if media.uploaded_by %}
+                                                        <span><i class="far fa-user"></i> {{ media.uploaded_by.get_full_name|default:media.uploaded_by.email }}</span>
+                                                        {% endif %}
+                                                        <span><i class="far fa-calendar-alt"></i> {{ media.created_at|date:"M d, Y" }}</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="col-12">
+                                    <div class="alert alert-info text-center py-5">
+                                        <h4>No media files available.</h4>
+                                        {% if user.is_authenticated %}
+                                        <p class="mb-0">
+                                            <a href="{% url 'media_upload' %}" class="btn btn-primary mt-3">
+                                                Upload your first media file
+                                            </a>
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Chapter-specific Tabs -->
+                    {% for chapter in chapters %}
+                    <div class="tab-pane fade" id="chapter-{{ chapter.id }}" role="tabpanel"
+                         aria-labelledby="chapter-{{ chapter.id }}-tab">
+                        <div class="row popup-gallery">
+                            {% if chapter.media_set.all %}
+                                {% for media in chapter.media_set.all %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="gallery-item">
+                                        <div class="gallery-img">
+                                            {% if media.file.url|lower|slice:'-4:' == '.jpg' or media.file.url|lower|slice:'-5:' == '.jpeg' or media.file.url|lower|slice:'-4:' == '.png' or media.file.url|lower|slice:'-4:' == '.gif' %}
+                                                <img src="{{ media.file.url }}" alt="{{ media.alt_text|default:'Gallery Image' }}">
+                                            {% elif media.file.url|lower|slice:'-4:' == '.mp4' or media.file.url|lower|slice:'-4:' == '.avi' or media.file.url|lower|slice:'-5:' == '.mov' or media.file.url|lower|slice:'-4:' == '.wmv' %}
+                                                <video class="gallery-video" muted>
+                                                    <source src="{{ media.file.url }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                                <div class="video-overlay">
+                                                    <i class="fas fa-play"></i>
+                                                </div>
+                                            {% else %}
+                                                <div class="file-icon">
+                                                    <i class="fas fa-file-alt fa-3x"></i>
+                                                    <p>{{ media.file.name|slice:'-15:' }}</p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="gallery-content">
+                                            {% if media.file.url|lower|slice:'-4:' == '.jpg' or media.file.url|lower|slice:'-5:' == '.jpeg' or media.file.url|lower|slice:'-4:' == '.png' or media.file.url|lower|slice:'-4:' == '.gif' %}
+                                                <a class="popup-img gallery-link" href="{{ media.file.url }}"
+                                                   data-lightbox="gallery-chapter-{{ chapter.id }}"
+                                                   data-title="{{ media.alt_text|default:'' }}">
+                                                    <i class="far fa-plus"></i>
+                                                </a>
+                                            {% endif %}
+                                            <div class="gallery-info">
+                                                <h4 class="gallery-title">
+                                                    {{ media.alt_text|default:"Media File"|truncatechars:30 }}
+                                                </h4>
+                                                <div class="gallery-meta">
+                                                    <small class="text-muted">
+                                                        {% if media.uploaded_by %}
+                                                        <span><i class="far fa-user"></i> {{ media.uploaded_by.get_full_name|default:media.uploaded_by.email }}</span>
+                                                        {% endif %}
+                                                        <span><i class="far fa-calendar-alt"></i> {{ media.created_at|date:"M d, Y" }}</span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="col-12">
+                                    <div class="alert alert-info text-center py-5">
+                                        <h4>No media files for {{ chapter.name }} chapter.</h4>
+                                        {% if user.is_authenticated %}
+                                        <p class="mb-0">
+                                            <a href="{% url 'media_upload' %}" class="btn btn-primary mt-3">
+                                                Upload media for {{ chapter.name }}
+                                            </a>
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Uncategorized Tab -->
+                    {% if no_chapter_media %}
+                    <div class="tab-pane fade" id="no-chapter" role="tabpanel" aria-labelledby="no-chapter-tab">
+                        <div class="row popup-gallery">
+                            {% for media in no_chapter_media %}
+                            <div class="col-md-4 mb-4">
+                                <div class="gallery-item">
+                                    <div class="gallery-img">
+                                        {% if media.file.url|lower|slice:'-4:' == '.jpg' or media.file.url|lower|slice:'-5:' == '.jpeg' or media.file.url|lower|slice:'-4:' == '.png' or media.file.url|lower|slice:'-4:' == '.gif' %}
+                                            <img src="{{ media.file.url }}" alt="{{ media.alt_text|default:'Gallery Image' }}">
+                                        {% elif media.file.url|lower|slice:'-4:' == '.mp4' or media.file.url|lower|slice:'-4:' == '.avi' or media.file.url|lower|slice:'-5:' == '.mov' or media.file.url|lower|slice:'-4:' == '.wmv' %}
+                                            <video class="gallery-video" muted>
+                                                <source src="{{ media.file.url }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            <div class="video-overlay">
+                                                <i class="fas fa-play"></i>
+                                            </div>
+                                        {% else %}
+                                            <div class="file-icon">
+                                                <i class="fas fa-file-alt fa-3x"></i>
+                                                <p>{{ media.file.name|slice:'-15:' }}</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="gallery-content">
+                                        {% if media.file.url|lower|slice:'-4:' == '.jpg' or media.file.url|lower|slice:'-5:' == '.jpeg' or media.file.url|lower|slice:'-4:' == '.png' or media.file.url|lower|slice:'-4:' == '.gif' %}
+                                            <a class="popup-img gallery-link" href="{{ media.file.url }}"
+                                               data-lightbox="gallery-no-chapter"
+                                               data-title="{{ media.alt_text|default:'' }}">
+                                                <i class="far fa-plus"></i>
+                                            </a>
+                                        {% endif %}
+                                        <div class="gallery-info">
+                                            <h4 class="gallery-title">
+                                                {{ media.alt_text|default:"Media File"|truncatechars:30 }}
+                                            </h4>
+                                            <div class="gallery-meta">
+                                                <small class="text-muted">
+                                                    {% if media.uploaded_by %}
+                                                    <span><i class="far fa-user"></i> {{ media.uploaded_by.get_full_name|default:media.uploaded_by.email }}</span>
+                                                    {% endif %}
+                                                    <span><i class="far fa-calendar-alt"></i> {{ media.created_at|date:"M d, Y" }}</span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        <!-- gallery-area end -->
+
+    </main>
+
+    <!-- Add Bootstrap JS if not already included -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Lightbox JS for gallery popups -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
+    <!-- Add your JavaScript links here -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+    // Initialize lightbox
+    lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': true,
+        'albumLabel': "Image %1 of %2",
+        'fadeDuration': 300,
+        'imageFadeDuration': 300
+    });
+
+    // Initialize video play on hover
+    document.addEventListener('DOMContentLoaded', function() {
+        const videos = document.querySelectorAll('.gallery-video');
+
+        videos.forEach(video => {
+            const parent = video.closest('.gallery-item');
+
+            parent.addEventListener('mouseenter', function() {
+                video.play().catch(e => console.log('Autoplay prevented:', e));
+            });
+
+            parent.addEventListener('mouseleave', function() {
+                video.pause();
+                video.currentTime = 0;
+            });
+
+            // Also play on click for mobile/touch devices
+            parent.addEventListener('click', function(e) {
+                if (!e.target.closest('.gallery-link') && video.paused) {
+                    video.play().catch(e => console.log('Play prevented:', e));
+                }
+            });
+        });
+
+        // Auto-activate tab from URL hash
+        const hash = window.location.hash;
+        if (hash) {
+            const tabTrigger = document.querySelector(`button[data-bs-target="${hash}"]`);
+            if (tabTrigger) {
+                new bootstrap.Tab(tabTrigger).show();
+            }
+        }
+    });
+    </script>
+{% endblock %}

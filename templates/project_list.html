@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ block.super }} - Projects{% endblock %}
+
+{% block meta_description %}Browse our projects and programs on LIMAFI.{% endblock %}
+
+{% block meta_keywords %}limafi, projects, programs, initiatives{% endblock %}
+
+{% block content %}
+
+    <!-- popup search -->
+    <div class="search-popup">
+        <button class="close-search"><span class="far fa-times"></span></button>
+        <form action="#">
+            <div class="form-group">
+                <input type="search" name="search-field" placeholder="Search Here..." required>
+                <button type="submit"><i class="far fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <!-- popup search end -->
+
+    <main class="main">
+
+        <!-- breadcrumb -->
+        <div class="site-breadcrumb" style="background: url({% static 'assets/img/breadcrumb/projects.jpg' %})">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="breadcrumb-title">Projects</h2>
+                        <ul class="breadcrumb-menu">
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li class="active">Projects</li>
+                        </ul>
+                    </div>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <a href="{% url 'project_create' %}" class="btn btn-primary">
+                        Create Project
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- projects-area -->
+        <div class="project-area py-120">
+            <div class="container">
+                {% if object_list %}
+                    <div class="row">
+                        {% for project in object_list %}
+                        <div class="col-md-6 mb-4">
+                            <div class="project-item">
+                                <div class="project-img">
+                                    {% if project.images.all %}
+                                        {% with project.images.first as first_image %}
+                                            {% if first_image.file and first_image.file.url %}
+                                                <img src="{{ first_image.file.url }}" alt="{{ project.title }}">
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% else %}
+                                    {% endif %}
+                                </div>
+                                <div class="project-content">
+                                    <div class="project-meta">
+                                        <ul>
+                                            <li><i class="far fa-calendar-alt"></i>
+                                                {{ project.created_at|date:"M d, Y" }}
+                                            </li>
+                                            {% if project.updated_at and project.updated_at != project.created_at %}
+                                            <li><i class="far fa-clock"></i>
+                                                Updated: {{ project.updated_at|date:"M d, Y" }}
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <h4 class="project-title">
+                                        <a href="{% url 'project_detail' project.pk %}">{{ project.title }}</a>
+                                    </h4>
+                                    <p>{{ project.description|truncatewords:30|default:"No description available." }}</p>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <a href="{% url 'project_detail' project.pk %}" class="theme-btn">
+                                            View Details <i class="fas fa-circle-arrow-right"></i>
+                                        </a>
+
+                                        {% if project.images.all.count > 0 %}
+                                        <span class="badge bg-info">
+                                            <i class="far fa-images"></i> {{ project.images.all.count }} images
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if is_paginated %}
+                    <div class="row">
+                        <div class="col-12">
+                            <nav aria-label="Project pagination">
+                                <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% for num in page_obj.paginator.page_range %}
+                                        {% if page_obj.number == num %}
+                                        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                {% else %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center py-5">
+                                <h4>No projects available at the moment.</h4>
+                                <p class="mb-0">Check back later or create a new project if you're authorized.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- projects-area end -->
+
+    </main>
+
+{% endblock %}

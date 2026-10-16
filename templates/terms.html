@@ -1,0 +1,635 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- popup search -->
+<div class="search-popup">
+    <button class="close-search"><span class="far fa-times"></span></button>
+    <form action="#">
+        <div class="form-group">
+            <input type="search" name="search-field" placeholder="Search Here..." required>
+            <button type="submit"><i class="far fa-search"></i></button>
+        </div>
+    </form>
+</div>
+<!-- popup search end -->
+
+<main class="main">
+    <!-- breadcrumb -->
+    <div class="site-breadcrumb" style="background: url({% static 'assets/img/breadcrumb/mandingo.jpg' %})">
+        <div class="container">
+            <h2 class="breadcrumb-title">AZMA Constitution</h2>
+            <ul class="breadcrumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Constitution</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- terms-area -->
+    <div class="terms-area py-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="terms-content">
+
+                        <!-- Preamble -->
+                        <div class="terms-section" id="preamble">
+                            <h2 class="terms-title">Preamble</h2>
+                            <div class="terms-text">
+                                <p>We, the undersigned, wishing to secure for ourselves the benefit of an association of persons commonly interested in the Arizona Mandingo Association, constitute ourselves the Arizona Mandingo Association and enact this constitution as our governing law.</p>
+                                <p>It shall be our purpose to further the exchange of information and cooperation between members, to promote Mandingo tradition and its universal tolerant and peaceful values in the United States of America and our native lands.</p>
+                                <p>We will conduct Arizona Mandingo Association programs and activities as to advance Mandingo's identity, general interest, and welfare of the Mandingo community in Arizona. Arizona Mandingo Association members shall contribute peacefully and democratically to the diversity and pluralism of our community.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 1 -->
+                        <div class="terms-section" id="article1">
+                            <h2 class="terms-title">Article I (1): Membership</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Eligibility</h4>
+                                <p>Membership of Arizona Mandingo Association is open to anyone who:</p>
+                                <ul class="terms-ul">
+                                    <li>Is at least 18 years old</li>
+                                    <li>Resides in the state of Arizona</li>
+                                    <li>Is fully registered and has a membership ID card</li>
+                                    <li>Believes in Arizona Mandingo Association's mission and vision</li>
+                                </ul>
+
+                                <h4>Section 2: Voluntary Participation</h4>
+                                <p>Membership of Arizona Mandingo Association shall be voluntary participants in the association activities and must abide by the provisions of the constitution and the by-laws of Arizona Mandingo Association.</p>
+
+                                <h4>Section 3: Good Standing</h4>
+                                <p>A member must be in good standing, be qualified to vote and be voted for (all dues must be paid in full).</p>
+
+                                <h4>Section 4: Member Responsibilities</h4>
+                                <ul class="terms-ul">
+                                    <li>Member must be ready and willing to participate in one of Arizona Mandingo Association's committees.</li>
+                                    <li>Participate in Arizona Mandingo Association activities, events, and service commitments of the association.</li>
+                                    <li>Participate in Arizona Mandingo Association member meetings, regular/special, and elections.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Article 2 -->
+                        <div class="terms-section" id="article2">
+                            <h2 class="terms-title">Article II (2): Officers</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Executive Committee</h4>
+                                <p>Management of Arizona Mandingo Association shall be vested in an Executive Committee. The Executive Committee shall comprise of the President, Vice President, Secretary, Treasurer, and Financial Secretary. The Executive Committee of Arizona Mandingo Association shall meet at least twice a month to manage the focus resources of the Association and plan future activities and set agenda items for meetings. The quorum of this committee shall consist of a simple majority of the total members.</p>
+                                <p>The officers of Arizona Mandingo Association shall be elected for a term of two years by secret ballot of the members present, provided there be a quorum. The elected officials can run as many times as possible without any restriction at the annual meeting.</p>
+
+                                <h4>Section 3: Vacancies</h4>
+                                <p>Vacancies occurring between elections must be filled by special elections at the first regular meeting following the withdrawal, resignation, or death.</p>
+
+                                <h4>Section 4: Removal of Officers</h4>
+                                <p>Officers may be removed by a three-fourths (75%) vote of the membership present.</p>
+
+                                <h4>Section 5: Reporting & Budget</h4>
+                                <p>The Executive Committee shall, at the last general meeting of the year, report the state of the Association. The Executive Committee shall submit an operating budget for the upcoming years to the membership for approval. Members' dues, if any, shall be specifically defined in the operating budget.</p>
+                                <ul class="terms-ul">
+                                    <li>Shall seek approval from the membership for all organization expenditures over five hundred dollars ($500.00).</li>
+                                    <li>Shall seek membership approval to commit Arizona Mandingo Association in any community program, activity, or fundraising.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Article 3 -->
+                        <div class="terms-section" id="article3">
+                            <h2 class="terms-title">Article III (3): Duties of the President</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: The President</h4>
+                                <p>The President shall preside at all meetings of this Association, and conduct them according to the rules adopted. He/She shall enforce due observance of this Constitution and by-laws, decide all questions of order, sign all official documents adopted by the Association, and perform all other duties pertaining to the office of President.</p>
+                                <p>The President shall have the authority to appoint all the appointed officers, including board representative. He/She shall have the power to remove such officers if they do not perform their duties as required by the President. The President shall submit to the membership of such appointees at the time of appointment.</p>
+
+                                <h4>Section 2: The Vice President</h4>
+                                <p>The Vice President shall assume all the duties of the President in his/her absence. In addition, he/she shall organize Association activities, plan and recommend programs for operating benefits, and advance Arizona Mandingo Association interest and activity as approved by the Association.</p>
+
+                                <h4>Section 3: The Secretary</h4>
+                                <p>The Secretary shall have custody of Arizona Mandingo Association's constitution, keep a record of proceedings of all meetings, process membership application, carry on all correspondence, read communications at each meeting, and mail or E-Mail meeting notices to each member. At the expiration of his/her term, shall turn over all items belonging to the Association to his/her successor.</p>
+
+                                <h4>Section 4: The Treasurer</h4>
+                                <p>The Treasurer shall receive and receipt for all monies paid to the Association, keep an accurate account of all monies received and expended, pay no bill without proper authorization (by the Association or its officers constituting a business committee). At the end of each quarter he/she shall submit an itemized statement of disbursements and receipts. At the end of his/her term shall turn over everything in his/her possession belonging to Arizona Mandingo Association to his/her successor.</p>
+
+                                <h4>Section 5: The Financial Secretary</h4>
+                                <p>The Financial Secretary shall work according to the policies and procedures established by the Arizona Mandingo Association's Constitution and by-laws.</p>
+                                <ol class="terms-ol">
+                                    <li>To keep day-to-day financial records of the organization.</li>
+                                    <li>Collection of dues.</li>
+                                    <li>Fund-raising projects.</li>
+                                    <li>Individual contributions.</li>
+                                    <li>Deposit all monies received within 3 days.</li>
+                                    <li>Forward all receipts from source and report them to the Treasurer of Arizona Mandingo Association.</li>
+                                    <li>Shall maintain confidentiality of all financial information and records of Arizona Mandingo.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <!-- Article 4 -->
+                        <div class="terms-section" id="article4">
+                            <h2 class="terms-title">Article IV (4): Meetings</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Regular Schedule</h4>
+                                <p>Regular scheduled meetings shall be held once a month (last Sunday of each month). At least seven days' notice shall be given for each regular meeting of Arizona Mandingo Association. Special emergency meetings may be called with less than three days' notice by the Executive Committee. The executive leadership shall have the mandatory meeting before each general meeting.</p>
+
+                                <h4>Section 2: Refreshment Allocation</h4>
+                                <p>For each general meeting, the amount of one hundred dollars ($100.00) will be allocated for refreshment, and this amount will come from the organization budget.</p>
+
+                                <h4>Section 3: Quorum & Decisions</h4>
+                                <p>During a regular meeting, a minimum of 10 people or above of the membership shall constitute a quorum to start a meeting. Decisions in the meeting shall be decided by simple majority present in the meeting.</p>
+
+                                <h4>Section 4: Parliamentary Procedure</h4>
+                                <p>Roberts' Rules of Order shall be followed by Arizona Mandingo Association in all cases involving parliamentary procedures when it does not conflict with the constitution.</p>
+
+                                <h4>Section 5: Special Motions</h4>
+                                <p>Motions dealing with amendments to the Constitution or By-laws and the removal of officers or members will require 2/3 of members present. All other motions will require a majority vote of the quorum to pass.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 5 -->
+                        <div class="terms-section" id="article5">
+                            <h2 class="terms-title">Article V (5): Dues</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Sources of Finance</h4>
+                                <p>The finances of Arizona Mandingo Association will come from fund-raising projects, individual contributions, and dues paid by all active members and shall be binding on each and every member to pay $10.00 meeting dues at the end of every meeting, regardless of whether you attended the meeting or not.</p>
+
+                                <h4>Section 2: Levying Dues</h4>
+                                <p>Arizona Mandingo Association, by majority vote of those present at any regular meeting, may levy upon the general membership such dues or assessments as shall be deemed necessary for the business of the Association. Non-payment of such dues or assessments shall lead to suspension and/or expulsion from the Association within the discretion of the membership.</p>
+
+                                <h4>Section 3: Compliance & Attendance</h4>
+                                <p>No member shall benefit from the organization unless you are in compliance with the organization, which includes: dues payment, attending meetings, and other relevant aspects of the organization. All members of Arizona Mandingo Association are obliged to attend all 12 meetings within the calendar year. If for any other reason you are unable to attend, you should write an official letter to the organization; even with that, you are obliged to attend six (6) of the twelve (12) meetings in the calendar year.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 6 -->
+                        <div class="terms-section" id="article6">
+                            <h2 class="terms-title">Article VI (6): Elections</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Time of Elections</h4>
+                                <p>Arizona Mandingo Association general elections shall be held on the first Sunday of February, followed by the induction of elected officials on the first Sunday of March respectively. Also, the inauguration shall be planned within 3 months prior to the date of the induction of elected officials.</p>
+
+                                <h4>Section 2: Type of Elections</h4>
+                                <p>General election will be held to replace Arizona Mandingo Association officers whose terms are due to expire.</p>
+
+                                <h4>Section 3: Team Candidacy</h4>
+                                <p>Members with the intention of running for any elected position shall run as a team, not as individuals.</p>
+
+                                <h4>Section 4: Nomination of Candidates</h4>
+                                <p>A candidate for office must be nominated by an Arizona Mandingo Association voting member during the meeting in compliance with Article (5) Section 3 during the general election or special election.</p>
+                                <p>In case of vacancy or vacancies after the general election, there shall be a special election held on the second (2nd) Sunday of March.</p>
+
+                                <h4>Section 5: Presidential Tenure</h4>
+                                <p>President and his/her team members will be elected for a three-year period (3 years period) and for two terms (2) only.</p>
+
+                                <h4>Section 6: Form of Vote</h4>
+                                <p>Voting under this article shall be by secret ballot box, and members must be physically present to vote.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 7 -->
+                        <div class="terms-section" id="article7">
+                            <h2 class="terms-title">Article VII (7): Committees</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Standing Committees</h4>
+                                <p>The standing committees and their responsibilities are as follows. Standing committees may be given additional responsibilities by the Executive Committee as needed.</p>
+
+                                <h4>A. Activities Committee</h4>
+                                <ol class="terms-ol">
+                                    <li>Shall research and develop events, activities, and service commitments that will benefit the Association.</li>
+                                    <li>Shall present its recommendations to the membership for vote.</li>
+                                </ol>
+
+                                <h4>B. Fundraising Committee</h4>
+                                <ol class="terms-ol">
+                                    <li>Shall research, develop, coordinate, and support fundraising efforts.</li>
+                                    <li>Shall present its recommendations to the membership for a vote.</li>
+                                </ol>
+
+                                <h4>Section 2: Special Committee</h4>
+                                <p>The President shall have the authority to appoint any special committees that will meet the needs of Arizona Mandingo Association.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 8 -->
+                        <div class="terms-section" id="article8">
+                            <h2 class="terms-title">Article VIII (8): Financial Support</h2>
+                            <div class="terms-list">
+                                <p>The finances of Arizona Mandingo Association will come from fund-raising, individual contributions, and dues.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 9 -->
+                        <div class="terms-section" id="article9">
+                            <h2 class="terms-title">Article IX (9): By-Laws</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Provision for By-Law</h4>
+                                <ul class="terms-ul">
+                                    <li>Arizona Mandingo Association may approve by-laws for the specific operation of the Association.</li>
+                                    <li>No by-law shall be adopted that is contrary to the provision of the constitution.</li>
+                                </ul>
+
+                                <h4>Section 2: Vote Required</h4>
+                                <ul class="terms-ul">
+                                    <li>Arizona Mandingo Association may adopt, amend, or rescind any by-law by a three-fourth (3/4) vote of the total voting memberships.</li>
+                                    <li>Any proposed by-law must be publicized in writing to the members at least 7 days prior to the meeting at which it is to be voted upon.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Article 10 -->
+                        <div class="terms-section" id="article10">
+                            <h2 class="terms-title">Article X (10): Amendments</h2>
+                            <div class="terms-list">
+                                <h4>Section 1</h4>
+                                <p>Proposed amendments must be adopted in accordance with Article 4, Section 5 and amendments to this constitution.</p>
+
+                                <h4>Section 2</h4>
+                                <p>A proposed amendment to this constitution must be presented to the total voting membership in the form of a written motion at least 7 days before it is to be voted on.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 11 -->
+                        <div class="terms-section" id="article11">
+                            <h2 class="terms-title">Article XI (11): Organization Members Benefits — Death Related</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Biological Family Defined</h4>
+                                <p>Biological family referred to as follows:</p>
+                                <ul class="terms-ul">
+                                    <li>A. Father</li>
+                                    <li>B. Mother</li>
+                                    <li>C. Wife</li>
+                                    <li>D. Husband</li>
+                                    <li>E. Son</li>
+                                    <li>F. Daughter</li>
+                                </ul>
+
+                                <h4>Section 2: Death Within Arizona</h4>
+                                <p>Any biological family member passed away within the State of Arizona and he/she is in good standing with the organization, the organization shall take the full responsibility for the burial expenses.</p>
+
+                                <h4>Section 3: Contribution Amount</h4>
+                                <p>The amount to be paid by each member will be decided by the leadership.</p>
+
+                                <h4>Section 4: Bereaved Family Support</h4>
+                                <p>For any other contributions or any money collected, it will all be presented to the bereaved family.</p>
+
+                                <h4>Section 5: Death Outside Arizona</h4>
+                                <p>Any biological family member passed away within the United States or outside of the United States and he/she is in good standing with the organization, the organization shall contribute any amount that will be collected from each member, and it will all be presented to the bereaved family. No money shall be drawn from the organization bank account.</p>
+
+                                <h4>Section 6: Other Death-Related Issues</h4>
+                                <p>Any other death-related issues that are not mentioned in line with Article XI, the organization will be bound to take a special visit to the grieving family.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 12 -->
+                        <div class="terms-section" id="article12">
+                            <h2 class="terms-title">Article XII (12): Membership Babies' Naming Ceremony</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Recognition</h4>
+                                <p>If any member is having a baby's naming ceremony and he/she is in good standing with the organization and having informed the organization about it, the organization shall make it as its responsibility to identify with that family.</p>
+
+                                <h4>Section 2: Donation Amount</h4>
+                                <p>$200.00 (Two Hundred Dollars) shall be donated to the parents of the newborn baby in accordance with baby's naming ceremony rules.</p>
+
+                                <h4>Section 3: Member Contribution</h4>
+                                <p>Every member shall pay the amount of $10.00 (Ten Dollars) each, present or not present at the baby's naming ceremony.</p>
+
+                                <h4>Section 4: Balance & Excess</h4>
+                                <p>If we are unable to generate the full amount of $200.00 (Two Hundred Dollars) at the baby's naming ceremony, the President shall instruct the Treasurer to make up the balance. If it exceeded the amount of $200.00 (Two Hundred Dollars), the excess should be deposited into the organization's account with an official receipt.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 13 -->
+                        <div class="terms-section" id="article13">
+                            <h2 class="terms-title">Article XIII (13): Education</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Support for Education</h4>
+                                <p>Arizona Mandingo Association will continue to support all of our membership who want to pursue their education to help themselves and our community.</p>
+
+                                <h4>Section 2: Graduation Recognition</h4>
+                                <p>If any student of Arizona Mandingo Association who is graduating from high school and above, the organization shall prepare a certificate of appreciation plus any other voluntary contributions.</p>
+
+                                <h4>Section 3: Graduates Below 18</h4>
+                                <p>Any graduate within the Arizona Mandingo Association that is below 18 years of age and both parents are in good standing with the organization shall receive a certificate of appreciation plus any other voluntary contribution.</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 14 -->
+                        <div class="terms-section" id="article14">
+                            <h2 class="terms-title">Article XIV (14): Marriage</h2>
+                            <div class="terms-list">
+                                <h4>Section 1: Marriage Support</h4>
+                                <p>If any member of Arizona Mandingo Association who is getting married and he/she is in good standing with the organization, the organization shall be fully represented and contribute the amount of $400.00 (Four Hundred Dollars) to the married couple.</p>
+
+                                <h4>Section 2: Member Contribution</h4>
+                                <p>The amount to be paid by each member will be decided by the leadership.</p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Navigation -->
+                        <div class="terms-navigation">
+                            <h4>Table of Contents</h4>
+                            <ul class="nav-links">
+                                <li><a href="#preamble">Preamble</a></li>
+                                <li><a href="#article1">Article I: Membership</a></li>
+                                <li><a href="#article2">Article II: Officers</a></li>
+                                <li><a href="#article3">Article III: Duties of the President</a></li>
+                                <li><a href="#article4">Article IV: Meetings</a></li>
+                                <li><a href="#article5">Article V: Dues</a></li>
+                                <li><a href="#article6">Article VI: Elections</a></li>
+                                <li><a href="#article7">Article VII: Committees</a></li>
+                                <li><a href="#article8">Article VIII: Financial Support</a></li>
+                                <li><a href="#article9">Article IX: By-Laws</a></li>
+                                <li><a href="#article10">Article X: Amendments</a></li>
+                                <li><a href="#article11">Article XI: Members Benefits (Death)</a></li>
+                                <li><a href="#article12">Article XII: Baby Naming Ceremony</a></li>
+                                <li><a href="#article13">Article XIII: Education</a></li>
+                                <li><a href="#article14">Article XIV: Marriage</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Important Note -->
+                        <div class="terms-notice">
+                            <div class="notice-icon">
+                                <i class="far fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="notice-content">
+                                <h5>Important Note</h5>
+                                <p>This is the official Constitution of the Arizona Mandingo Association as adopted by the membership. For a signed physical copy or to propose an amendment, please contact the AZMA Secretariat.</p>
+                                <a href="{% url 'contact' %}" class="theme-btn btn-sm">Contact Secretariat</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <aside class="sidebar">
+                        <!-- Constitution Quick Links -->
+                        <div class="widget constitution-links">
+                            <h5 class="widget-title">Constitution Articles</h5>
+                            <div class="constitution-list">
+                                <a href="#preamble" class="active"><i class="far fa-file-alt"></i> Preamble</a>
+                                <a href="#article1"><i class="far fa-users"></i> Article I: Membership</a>
+                                <a href="#article2"><i class="far fa-user-tie"></i> Article II: Officers</a>
+                                <a href="#article3"><i class="far fa-tasks"></i> Article III: Duties of President</a>
+                                <a href="#article4"><i class="far fa-calendar-alt"></i> Article IV: Meetings</a>
+                                <a href="#article5"><i class="far fa-money-check-alt"></i> Article V: Dues</a>
+                                <a href="#article6"><i class="far fa-person-booth"></i> Article VI: Elections</a>
+                                <a href="#article7"><i class="far fa-clipboard-list"></i> Article VII: Committees</a>
+                                <a href="#article8"><i class="far fa-chart-line"></i> Article VIII: Financial Support</a>
+                                <a href="#article9"><i class="far fa-file-signature"></i> Article IX: By-Laws</a>
+                                <a href="#article10"><i class="far fa-edit"></i> Article X: Amendments</a>
+                                <a href="#article11"><i class="far fa-heart-broken"></i> Article XI: Death Benefits</a>
+                                <a href="#article12"><i class="far fa-baby"></i> Article XII: Baby Naming</a>
+                                <a href="#article13"><i class="far fa-graduation-cap"></i> Article XIII: Education</a>
+                                <a href="#article14"><i class="far fa-ring"></i> Article XIV: Marriage</a>
+                            </div>
+                        </div>
+
+                        <!-- Contact for Official Document -->
+                        <div class="widget contact-widget">
+                            <h5 class="widget-title">Need Official Copy?</h5>
+                            <div class="contact-info">
+                                <p>For the complete official constitution document, please contact:</p>
+                                <div class="contact-item">
+                                    <i class="far fa-envelope"></i>
+                                    <span>AZMA Secretariat</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="far fa-phone"></i>
+                                    <span>+1 (480) 000-0000</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="far fa-globe"></i>
+                                    <span>info@azmandingo.org</span>
+                                </div>
+                                <a href="{% url 'contact' %}" class="theme-btn w-100 text-center mt-3">
+                                    <i class="far fa-paper-plane"></i> Request Document
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Membership Status -->
+                        <div class="widget status-widget">
+                            <h5 class="widget-title">Member Status</h5>
+                            <div class="status-info">
+                                <div class="status-item">
+                                    <div class="status-icon good">
+                                        <i class="far fa-check-circle"></i>
+                                    </div>
+                                    <div class="status-content">
+                                        <h6>Good Standing</h6>
+                                        <p>Dues paid in full; eligible to vote and be voted for</p>
+                                    </div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-icon pending">
+                                        <i class="far fa-clock"></i>
+                                    </div>
+                                    <div class="status-content">
+                                        <h6>Pending</h6>
+                                        <p>Outstanding dues or meeting obligations</p>
+                                    </div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-icon inactive">
+                                        <i class="far fa-times-circle"></i>
+                                    </div>
+                                    <div class="status-content">
+                                        <h6>Suspended</h6>
+                                        <p>Non-payment may lead to suspension or expulsion</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- terms-area end -->
+
+</main>
+
+<style>
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .terms-content, .terms-content * {
+        visibility: visible;
+    }
+
+    .terms-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .search-popup,
+    .site-breadcrumb,
+    .sidebar,
+    .terms-navigation,
+    .terms-notice,
+    .print-btn,
+    header,
+    footer,
+    nav,
+    .breadcrumb-menu,
+    .breadcrumb-title {
+        display: none !important;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .row {
+        display: block !important;
+        margin: 0 !important;
+    }
+
+    .col-lg-8, .col-lg-4 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        padding: 0 !important;
+    }
+
+    .terms-area {
+        padding: 0 !important;
+    }
+
+    .terms-section {
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+    }
+
+    .terms-title {
+        font-size: 18px !important;
+        margin-top: 20px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 5px;
+    }
+
+    .terms-list h4 {
+        font-size: 14px !important;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .terms-list p, .terms-ul li {
+        font-size: 12px !important;
+        line-height: 1.4;
+    }
+
+    @page {
+        margin: 1cm;
+        size: A4;
+    }
+
+    body:after {
+        content: "Page " counter(page);
+        position: fixed;
+        bottom: 0;
+        right: 20px;
+        font-size: 10px;
+        color: #666;
+    }
+}
+
+/* Print button styling */
+.print-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.print-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.print-btn i {
+    margin-right: 8px;
+}
+</style>
+
+<script>
+// Smooth scrolling for anchor links
+document.addEventListener('DOMContentLoaded', function() {
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+
+    anchorLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+
+                document.querySelectorAll('.constitution-list a').forEach(a => {
+                    a.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        });
+    });
+
+    // Update active link on scroll
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('.terms-section');
+        const scrollPosition = window.scrollY + 150;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            const sectionId = section.getAttribute('id');
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                document.querySelectorAll('.constitution-list a').forEach(a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('href') === `#${sectionId}`) {
+                        a.classList.add('active');
+                    }
+                });
+            }
+        });
+    });
+
+    // Print constitution button
+    const printBtn = document.createElement('button');
+    printBtn.className = 'theme-btn print-btn';
+    printBtn.innerHTML = '<i class="far fa-print"></i> Print Constitution';
+
+    printBtn.addEventListener('click', function() {
+        window.print();
+    });
+
+    document.body.appendChild(printBtn);
+});
+</script>
+
+{% endblock %}

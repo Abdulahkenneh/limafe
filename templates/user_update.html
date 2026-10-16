@@ -1,0 +1,611 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Update Profile{% endblock %}
+
+{% block meta_description %}Update your LIMAFI profile information.{% endblock %}
+
+{% block meta_keywords %}limafi, profile, update, settings{% endblock %}
+
+{% block content %}
+
+<!-- popup search -->
+<div class="search-popup">
+    <button class="close-search"><span class="far fa-times"></span></button>
+    <form action="#">
+        <div class="form-group">
+            <input type="search" name="search-field" placeholder="Search Here..." required>
+            <button type="submit"><i class="far fa-search"></i></button>
+        </div>
+    </form>
+</div>
+<!-- popup search end -->
+
+<main class="main">
+
+    <!-- breadcrumb -->
+    <div class="site-breadcrumb" style="background: url({% static 'assets/img/breadcrumb/profile.jpg' %})">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="breadcrumb-title">Update Profile</h2>
+                    <ul class="breadcrumb-menu">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'my-profile' %}">Profile</a></li>
+                        <li class="active">Update Profile</li>
+                    </ul>
+                </div>
+                <div>
+                    <a href="{% url 'my-profile' %}" class="btn btn-outline-light">
+                        <i class="far fa-arrow-left me-2"></i> Back to Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- profile update area -->
+    <div class="profile-update-area py-120">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar Navigation -->
+                <div class="col-lg-3">
+                    <div class="profile-sidebar">
+                        <div class="profile-info mb-4">
+                            <div class="profile-avatar text-center">
+                                {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+                                {% else %}
+                                <div class="avatar-placeholder">
+                                    <i class="far fa-user-circle fa-5x text-primary"></i>
+                                </div>
+                                {% endif %}
+                                <h5 class="mt-3 mb-0">{{ user.get_full_name|default:user.username }}</h5>
+                                <p class="text-muted">{{ user.email }}</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-nav">
+                            <h6 class="nav-title">Account Settings</h6>
+                            <ul class="nav flex-column">
+
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'logout' %}">
+                                        <i class="far fa-sign-out-alt me-2"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="profile-stats mt-4">
+                            <h6 class="stats-title">Account Stats</h6>
+                            <div class="stats-item">
+                                <i class="far fa-calendar-alt me-2"></i>
+                                <span>Member since:</span>
+                                <strong>{{ user.date_joined|date:"M d, Y" }}</strong>
+                            </div>
+                            <div class="stats-item">
+                                <i class="far fa-clock me-2"></i>
+                                <span>Last login:</span>
+                                <strong>{{ user.last_login|timesince }} ago</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-lg-9">
+                    <div class="profile-update-form">
+                        <div class="form-header mb-4">
+                            <h3 class="mb-2">Update Your Profile</h3>
+                            <p class="text-muted">Keep your information up to date</p>
+                        </div>
+
+                        {% if messages %}
+                        <div class="messages mb-4">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                <div class="d-flex align-items-center">
+                                    {% if message.tags == 'success' %}
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    {% else %}
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    {% endif %}
+                                    <div>{{ message }}</div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-danger mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Please correct the errors below.
+                        </div>
+                        {% endif %}
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <!-- Profile Image -->
+                                <div class="col-md-12 mb-4">
+                                    <div class="profile-image-section">
+                                        <h5 class="mb-3">
+                                            <i class="far fa-camera me-2"></i>Profile Picture
+                                        </h5>
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <div class="current-avatar">
+                                                    {% if user.profile_image %}
+                                                    <img src="{{ user.profile_image.url }}" alt="Current Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                                                    {% else %}
+                                                    <div class="avatar-placeholder-large">
+                                                        <i class="far fa-user-circle fa-4x text-primary"></i>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="image-upload">
+                                                    <label for="id_profile_image" class="form-label">Upload new photo</label>
+                                                    <input type="file" class="form-control" id="id_profile_image" name="profile_image" accept="image/*">
+                                                    <div class="form-text">
+                                                        Max size: 2MB. JPG, PNG, GIF allowed.
+                                                        {% if user.profile_image %}
+                                                        <a href="#" class="text-danger ms-2" id="remove-image">
+                                                            <i class="far fa-trash-alt me-1"></i>Remove current photo
+                                                        </a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="preview-container mt-3" id="image-preview"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Personal Information -->
+                                <div class="col-md-12">
+                                    <h5 class="mb-3">
+                                        <i class="far fa-user-circle me-2"></i>Personal Information
+                                    </h5>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" value="{{ user.username }}" readonly>
+                                    <div class="form-text">Username cannot be changed</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                                        <i class="far fa-envelope me-2"></i>Email Address
+                                    </label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.email.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.phone_number.id_for_label }}" class="form-label">
+                                        <i class="far fa-phone me-2"></i>Phone Number
+                                    </label>
+                                    {{ form.phone_number }}
+                                    {% if form.phone_number.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.phone_number.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label for="{{ form.address.id_for_label }}" class="form-label">
+                                        <i class="far fa-map-marker-alt me-2"></i>Address
+                                    </label>
+                                    {{ form.address }}
+                                    {% if form.address.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.address.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Security Settings -->
+                                <div class="col-md-12 mt-4">
+                                    <h5 class="mb-3">
+                                        <i class="far fa-shield-alt me-2"></i>Security Settings
+                                    </h5>
+                                </div>
+
+                                <div class="col-md-12 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="form-check form-switch">
+                                                {{ form.is_two_factor_enabled }}
+                                                <label class="form-check-label" for="{{ form.is_two_factor_enabled.id_for_label }}">
+                                                    Two-Factor Authentication
+                                                </label>
+                                            </div>
+                                            <div class="form-text mt-2">
+                                                Add an extra layer of security to your account. 
+                                                {% if user.is_two_factor_enabled %}
+                                                <span class="text-success">
+                                                    <i class="fas fa-check-circle me-1"></i>Currently enabled
+                                                </span>
+                                                {% else %}
+                                                <span class="text-warning">
+                                                    <i class="fas fa-exclamation-triangle me-1"></i>Not enabled
+                                                </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Buttons -->
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top">
+                                        <div>
+                                            <a href="{% url 'my-profile' %}" class="btn btn-outline-secondary">
+                                                <i class="far fa-times me-2"></i> Cancel
+                                            </a>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <button type="reset" class="btn btn-outline-warning">
+                                                <i class="far fa-redo me-2"></i> Reset
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="far fa-save me-2"></i> Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- profile update area end -->
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Profile image preview
+    const profileImageInput = document.getElementById('id_profile_image');
+    const previewContainer = document.getElementById('image-preview');
+
+    if (profileImageInput) {
+        profileImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file size (2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File size must be less than 2MB');
+                    this.value = '';
+                    return;
+                }
+
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Only JPG, PNG, and GIF files are allowed');
+                    this.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = `
+                        <div class="alert alert-info">
+                            <div class="d-flex align-items-center">
+                                <i class="far fa-image me-3 fa-2x"></i>
+                                <div>
+                                    <strong>Preview:</strong>
+                                    <div class="mt-2">
+                                        <img src="${e.target.result}" alt="Preview" 
+                                             class="rounded" style="max-width: 200px; max-height: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.innerHTML = '';
+            }
+        });
+    }
+
+    // Remove profile image
+    const removeImageBtn = document.getElementById('remove-image');
+    if (removeImageBtn) {
+        removeImageBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to remove your profile picture?')) {
+                // Add a hidden field to indicate removal
+                let removeField = document.getElementById('remove_profile_image');
+                if (!removeField) {
+                    removeField = document.createElement('input');
+                    removeField.type = 'hidden';
+                    removeField.id = 'remove_profile_image';
+                    removeField.name = 'remove_profile_image';
+                    removeField.value = 'true';
+                    document.querySelector('form').appendChild(removeField);
+                }
+                
+                // Clear the file input
+                if (profileImageInput) {
+                    profileImageInput.value = '';
+                }
+                
+                // Update preview to show placeholder
+                document.querySelector('.current-avatar').innerHTML = `
+                    <div class="avatar-placeholder-large">
+                        <i class="far fa-user-circle fa-4x text-primary"></i>
+                    </div>
+                `;
+                
+                // Hide remove button
+                this.style.display = 'none';
+                
+                previewContainer.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="far fa-info-circle me-2"></i>
+                        Profile picture will be removed when you save changes.
+                    </div>
+                `;
+            }
+        });
+    }
+
+    // Form submission handler
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Saving...';
+                submitBtn.disabled = true;
+            }
+        });
+    }
+
+    // Toggle 2FA switch styling
+    const twoFactorSwitch = document.getElementById('{{ form.is_two_factor_enabled.id_for_label }}');
+    if (twoFactorSwitch) {
+        twoFactorSwitch.addEventListener('change', function() {
+            const label = this.parentElement.querySelector('.form-check-label');
+            if (this.checked) {
+                label.innerHTML = '<i class="fas fa-shield-check me-2 text-success"></i>Two-Factor Authentication (Enabled)';
+            } else {
+                label.innerHTML = '<i class="fas fa-shield me-2 text-warning"></i>Two-Factor Authentication (Disabled)';
+            }
+        });
+    }
+
+    // Input validation styling
+    const inputs = document.querySelectorAll('.form-control');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.profile-update-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.form-header {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.form-header h3 {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.profile-sidebar {
+    position: sticky;
+    top: 20px;
+}
+
+.profile-sidebar .profile-nav {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+
+.profile-nav .nav-title {
+    color: #666;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.profile-nav .nav-link {
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: all 0.3s;
+}
+
+.profile-nav .nav-link:hover,
+.profile-nav .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.profile-nav .nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.profile-stats {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+
+.stats-title {
+    color: #666;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.stats-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stats-item:last-child {
+    border-bottom: none;
+}
+
+.stats-item i {
+    color: var(--primary-color);
+    width: 20px;
+}
+
+.stats-item span {
+    flex: 1;
+    color: #666;
+}
+
+.stats-item strong {
+    color: #333;
+}
+
+.profile-image-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed #dee2e6;
+}
+
+.avatar-placeholder-large {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background: #e9ecef;
+    border-radius: 50%;
+}
+
+.image-upload .form-control {
+    border: 2px dashed #dee2e6;
+    background: white;
+}
+
+/* Toggle switch styling */
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+}
+
+.form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+}
+
+/* Card styling for security settings */
+.card {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Button styling */
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+/* Form validation */
+.is-valid {
+    border-color: #198754;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .profile-sidebar {
+        margin-bottom: 30px;
+    }
+    
+    .profile-update-form {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-image-section .row {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-image-section .col-auto {
+        margin-bottom: 20px;
+    }
+}
+</style>
+
+{% endblock %}

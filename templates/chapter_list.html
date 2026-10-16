@@ -1,0 +1,1034 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+:root {
+    --primary-color: #4361ee;
+    --primary-light: #4895ef;
+    --primary-dark: #3a0ca3;
+    --secondary-color: #f72585;
+    --accent-color: #4cc9f0;
+    --dark-color: #1e293b;
+    --gray-900: #334155;
+    --gray-800: #475569;
+    --gray-700: #64748b;
+    --gray-600: #94a3b8;
+    --gray-500: #cbd5e1;
+    --gray-400: #e2e8f0;
+    --gray-300: #f1f5f9;
+    --gray-200: #f8fafc;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+}
+
+.chapter-list-page {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    color: var(--gray-900);
+    background: var(--gray-100);
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.chapter-hero {
+    position: relative;
+    padding: 6rem 0 4rem;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 50%, var(--primary-light) 100%);
+    color: var(--white);
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.chapter-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url({% static 'assets/img/breadcrumb/europeans.jpg' %}) center/cover no-repeat;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: '›';
+    margin-left: 0.5rem;
+    opacity: 0.6;
+}
+
+.breadcrumb-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+    color: var(--white);
+}
+
+.breadcrumb-current {
+    color: var(--white);
+    font-weight: 600;
+}
+
+.hero-content {
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, var(--white), rgba(255, 255, 255, 0.9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+}
+
+/* Stats Overview */
+.stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: -2rem auto 3rem;
+    padding: 0 1.5rem;
+}
+
+.stat-card-overview {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    border: 1px solid var(--gray-300);
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-card-overview:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
+}
+
+.stat-icon-overview {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.stat-number-overview {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label-overview {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+/* Filter Section */
+.filter-section {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+}
+
+.filter-container {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    border: 1px solid var(--gray-300);
+    box-shadow: var(--shadow-md);
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.filter-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin: 0;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-input {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    width: 300px;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.filter-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--white);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-toggle:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--gray-200);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-tag:hover {
+    background: var(--gray-300);
+    transform: translateY(-1px);
+}
+
+.filter-tag.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+}
+
+.filter-tag-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Chapters Grid */
+.chapters-grid-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+}
+
+.chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Chapter Card */
+.chapter-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-300);
+    overflow: hidden;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+.chapter-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-light);
+}
+
+.chapter-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.chapter-card:hover::before {
+    opacity: 1;
+}
+
+.chapter-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chapter-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.chapter-card:hover .chapter-image img {
+    transform: scale(1.05);
+}
+
+.chapter-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.chapter-status {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--success-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(10px);
+}
+
+.chapter-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chapter-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.2;
+}
+
+.chapter-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-600);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.chapter-location i {
+    color: var(--primary-color);
+}
+
+.chapter-description {
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    flex: 1;
+    font-size: 0.9375rem;
+}
+
+.chapter-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--gray-100);
+    border-radius: var(--radius-lg);
+}
+
+.chapter-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.chapter-actions {
+    padding: 0 1.5rem 1.5rem;
+    margin-top: auto;
+}
+
+.chapter-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: var(--primary-color);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: var(--radius-lg);
+    font-weight: 500;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+}
+
+.chapter-link:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Featured Chapters */
+.featured-section {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: var(--gray-600);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.featured-card {
+    background: linear-gradient(135deg, var(--white) 0%, var(--gray-100) 100%);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    border: 2px solid var(--primary-light);
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.featured-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.featured-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.featured-card p {
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--gray-300);
+    grid-column: 1 / -1;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    color: var(--gray-400);
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+    color: var(--gray-600);
+    margin: 0 0 1.5rem 0;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+.pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    color: var(--gray-700);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.pagination-link:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.pagination-link.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+}
+
+.pagination-link.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .chapters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .search-input {
+        width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chapter-hero {
+        padding: 4rem 0 3rem;
+    }
+    
+    .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: -1rem;
+    }
+    
+    .stat-card-overview {
+        padding: 1.25rem;
+    }
+    
+    .filter-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .filter-toggle {
+        display: flex;
+    }
+    
+    .filter-tags {
+        display: none;
+    }
+    
+    .filter-tags.active {
+        display: flex;
+    }
+    
+    .chapters-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .stats-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .chapter-stats {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+</style>
+
+<main class="chapter-list-page">
+    <!-- Hero Section -->
+    <section class="chapter-hero">
+        <div class="hero-container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <div class="breadcrumb-item">
+                    <a href="{% url 'home' %}" class="breadcrumb-link">Home</a>
+                </div>
+                <div class="breadcrumb-item breadcrumb-current">
+                    Our Chapters
+                </div>
+            </nav>
+            
+            <div class="hero-content">
+                <h1 class="hero-title">Our Network of Chapters</h1>
+                <p class="hero-subtitle">
+                    Explore our global community of dedicated members working together to make a difference in their local communities and beyond.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Overview -->
+    <div class="stats-overview">
+        <div class="stat-card-overview">
+            <div class="stat-icon-overview">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="stat-number-overview">{{ total_chapters }}</div>
+            <div class="stat-label-overview">Total Chapters</div>
+        </div>
+        
+        <div class="stat-card-overview">
+            <div class="stat-icon-overview">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-number-overview">{{ total_members_across_chapters }}</div>
+            <div class="stat-label-overview">Active Members</div>
+        </div>
+        
+        <div class="stat-card-overview">
+            <div class="stat-icon-overview">
+                <i class="fas fa-globe"></i>
+            </div>
+            <div class="stat-number-overview">{{ chapters|length }}</div>
+            <div class="stat-label-overview">Countries</div>
+        </div>
+        
+        <div class="stat-card-overview">
+            <div class="stat-icon-overview">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <div class="stat-number-overview">{{ featured_chapters|length }}</div>
+            <div class="stat-label-overview">Featured Chapters</div>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-header">
+                <h2 class="filter-title">Find Your Chapter</h2>
+                <div class="filter-actions">
+                    <input type="text" 
+                           class="search-input" 
+                           placeholder="Search chapters by name or location..."
+                           id="chapterSearch">
+                    <button class="filter-toggle" id="filterToggle">
+                        <i class="fas fa-filter"></i>
+                        <span>Filter</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filter-tags" id="filterTags">
+                <button class="filter-tag active" data-filter="all">
+                    <span>All Chapters</span>
+                    <span class="filter-tag-count">{{ chapters|length }}</span>
+                </button>
+                <button class="filter-tag" data-filter="active">
+                    <span>Active</span>
+                </button>
+                <button class="filter-tag" data-filter="large">
+                    <span>Large Chapters</span>
+                </button>
+                <button class="filter-tag" data-filter="new">
+                    <span>New Chapters</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+ 
+
+    <!-- Chapters Grid -->
+    <section class="chapters-grid-section">
+        <div class="chapters-grid" id="chaptersGrid">
+            {% for chapter in chapters %}
+            <div class="chapter-card" 
+                 data-chapter-id="{{ chapter.id }}"
+                 data-chapter-name="{{ chapter.name|lower }}"
+                 data-chapter-location="{{ chapter.country|lower }}"
+                 data-chapter-members="{{ chapter.total_members }}"
+                 data-chapter-active="{{ chapter.is_good_standing }}">
+               
+                <div class="chapter-image">
+                    {% if chapter.logo %}
+                        <img src="{{ chapter.logo.url }}" alt="{{ chapter.name }}" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'assets/img/chapters/default.jpg' %}" alt="{{ chapter.name }}" loading="lazy">
+                    {% endif %}
+                    <div class="chapter-badge">Chapter</div>
+                    {% if chapter.is_good_standing %}
+                    <div class="chapter-status">
+                        <i class="fas fa-check-circle"></i>
+                        Active
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="chapter-content">
+                    <h3 class="chapter-title">{{ chapter.name }}</h3>
+                    
+                    <div class="chapter-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ chapter.country }}</span>
+                    </div>
+                    
+                    {% if chapter.description %}
+                    <p class="chapter-description">{{ chapter.description|truncatewords:25 }}</p>
+                    {% else %}
+                    <p class="chapter-description">Local chapter serving our community with dedication and passion.</p>
+                    {% endif %}
+                    
+                    <!--<div class="chapter-stats">-->
+                    <!--    <div class="chapter-stat">-->
+                    <!--        <span class="stat-value">{{ chapter.total_members }}</span>-->
+                    <!--        <span class="stat-label">Members</span>-->
+                    <!--    </div>-->
+                    <!--    <div class="chapter-stat">-->
+                    <!--        <span class="stat-value">{{ chapter.active_members }}</span>-->
+                    <!--        <span class="stat-label">Active</span>-->
+                    <!--    </div>-->
+                    <!--    <div class="chapter-stat">-->
+                    <!--        <span class="stat-value">{{ chapter.leader_count }}</span>-->
+                    <!--        <span class="stat-label">Leaders</span>-->
+                    <!--    </div>-->
+                    <!--    <div class="chapter-stat">-->
+                    <!--        <span class="stat-value">-->
+                    <!--            {% if chapter.created_at %}-->
+                    <!--                {{ chapter.created_at|date:"Y" }}-->
+                    <!--            {% else %}-->
+                    <!--                --->
+                    <!--            {% endif %}-->
+                    <!--        </span>-->
+                    <!--        <span class="stat-label">Established</span>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                </div>
+                
+                <div class="chapter-actions">
+                    <a href="{{ chapter.get_absolute_url }}" class="chapter-link">
+                        <span>View Chapter Details</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>No Chapters Available</h3>
+                <p>Check back soon for updates on our chapter network.</p>
+                <a href="{% url 'home' %}" class="chapter-link" style="max-width: 200px; margin: 0 auto;">
+                    <span>Return Home</span>
+                    <i class="fas fa-home"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="pagination-link">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">
+                    <i class="fas fa-angle-left"></i>
+                </a>
+            {% else %}
+                <span class="pagination-link disabled">
+                    <i class="fas fa-angle-double-left"></i>
+                </span>
+                <span class="pagination-link disabled">
+                    <i class="fas fa-angle-left"></i>
+                </span>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <span class="pagination-link active">{{ num }}</span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}" class="pagination-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">
+                    <i class="fas fa-angle-right"></i>
+                </a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            {% else %}
+                <span class="pagination-link disabled">
+                    <i class="fas fa-angle-right"></i>
+                </span>
+                <span class="pagination-link disabled">
+                    <i class="fas fa-angle-double-right"></i>
+                </span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const filterToggle = document.getElementById('filterToggle');
+    const filterTags = document.getElementById('filterTags');
+    const chapterSearch = document.getElementById('chapterSearch');
+    const chaptersGrid = document.getElementById('chaptersGrid');
+    const chapterCards = document.querySelectorAll('.chapter-card');
+    const filterTagsButtons = document.querySelectorAll('.filter-tag');
+
+    // Mobile Filter Toggle
+    filterToggle.addEventListener('click', () => {
+        filterTags.classList.toggle('active');
+    });
+
+    // Search Functionality
+    let searchTimeout;
+    chapterSearch.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            chapterCards.forEach(card => {
+                const chapterName = card.dataset.chapterName;
+                const chapterLocation = card.dataset.chapterLocation;
+                
+                const matchesSearch = searchTerm === '' || 
+                    chapterName.includes(searchTerm) || 
+                    chapterLocation.includes(searchTerm);
+                
+                if (matchesSearch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }, 300);
+    });
+
+    // Filter Functionality
+    filterTagsButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            
+            // Update active button
+            filterTagsButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Apply filter
+            chapterCards.forEach(card => {
+                const isActive = card.dataset.chapterActive === 'True';
+                const memberCount = parseInt(card.dataset.chapterMembers);
+                
+                let shouldShow = false;
+                
+                switch(filter) {
+                    case 'all':
+                        shouldShow = true;
+                        break;
+                    case 'active':
+                        shouldShow = isActive;
+                        break;
+                    case 'large':
+                        shouldShow = memberCount >= 50; // Large chapter threshold
+                        break;
+                    case 'new':
+                        // Assuming new chapters are those created in the last year
+                        const year = parseInt(card.querySelector('.stat-value:last-child').textContent);
+                        const currentYear = new Date().getFullYear();
+                        shouldShow = year === currentYear;
+                        break;
+                }
+                
+                if (shouldShow && card.style.display !== 'none') {
+                    card.style.display = 'flex';
+                } else if (!shouldShow) {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Card Hover Effects
+    chapterCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.zIndex = '10';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.zIndex = '';
+        });
+    });
+
+    // Close filters when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth < 768 && 
+            !filterTags.contains(e.target) && 
+            !filterToggle.contains(e.target) &&
+            filterTags.classList.contains('active')) {
+            filterTags.classList.remove('active');
+        }
+    });
+
+    // Clear search on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.activeElement === chapterSearch) {
+            chapterSearch.value = '';
+            chapterSearch.dispatchEvent(new Event('input'));
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!-- templates/accounts/connection_list.html -->
+{% extends 'base.html' %}  <!-- Assuming a base template exists -->
+
+{% block title %}My Connections{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">My Connections</h1>
+
+        {% if connections.exists %}
+            <div class="list-group">
+                {% for connection in connections %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">
+                                {% if connection.user1 == user %}
+                                    {{ connection.user2.get_full_name|default:connection.user2.username }}
+                                {% else %}
+                                    {{ connection.user1.get_full_name|default:connection.user1.username }}
+                                {% endif %}
+                            </h5>
+                            <p class="mb-1">Connection Type: {{ connection.get_connection_type_display }}</p>
+                            <small>Connected since: {{ connection.created_at|date:"F j, Y" }}</small>
+                        </div>
+                        <div>
+                                    </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="alert alert-info">You don't have any connections yet.</p>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

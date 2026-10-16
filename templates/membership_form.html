@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Membership - LIMAFE{% endblock %}
+{% block meta_description %}Create new membership record on LIMAFE portal{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5 bg-light">
+    <div class="row justify-content-center min-vh-80">
+        <div class="col-xl-6 col-lg-8 col-md-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="card-header py-4 bg-gradient-primary text-white">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h1 class="h4 mb-1 fw-semibold">
+                                <i class="fas fa-user-plus me-2"></i>New Membership
+                            </h1>
+                            <p class="mb-0 opacity-75">Join a chapter</p>
+                        </div>
+                        <a href="{% url 'membership_list' %}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i> Back
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-4 p-md-5">
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <strong>Please fix the errors below</strong>
+                        <ul class="mb-0 mt-2">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            <!-- Chapter -->
+                            <div class="col-12 mb-4">
+                                <label class="form-label fw-semibold">{{ form.chapter.label }}</label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    {{ form.chapter }}
+                                </div>
+                            </div>
+
+                            <!-- Sex -->
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-semibold">{{ form.sex.label }}</label>
+                                {{ form.sex }}
+                            </div>
+
+                            <!-- Marital Status -->
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-semibold">{{ form.marital_status.label }}</label>
+                                {{ form.marital_status }}
+                            </div>
+
+                            <!-- Children -->
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label fw-semibold">{{ form.number_of_children.label }}</label>
+                                {{ form.number_of_children }}
+                            </div>
+
+                            <!-- Dependents -->
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label fw-semibold">{{ form.number_of_dependents.label }}</label>
+                                {{ form.number_of_dependents }}
+                            </div>
+
+                            <!-- Household -->
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label fw-semibold">{{ form.household_size.label }}</label>
+                                {{ form.household_size }}
+                            </div>
+
+                            <!-- Dues Paid -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-check form-switch">
+                                    {{ form.dues_paid }}
+                                    <label class="form-check-label fw-semibold">
+                                        {{ form.dues_paid.label }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Active -->
+                            <div class="col-md-6 mb-4">
+                                <div class="form-check form-switch">
+                                    {{ form.is_active }}
+                                    <label class="form-check-label fw-semibold">
+                                        {{ form.is_active.label }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Dues Amount -->
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-semibold">{{ form.dues_amount.label }}</label>
+                                {{ form.dues_amount }}
+                            </div>
+
+                            <!-- Payment Date -->
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-semibold">{{ form.payment_date.label }}</label>
+                                {{ form.payment_date }}
+                            </div>
+
+                            <!-- Info -->
+                            <div class="col-12">
+                                <div class="alert alert-info border-0">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Join date is automatically set when your request is approved.
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between border-top pt-4 mt-4">
+                            <a href="{% url 'membership_list' %}" class="btn btn-outline-secondary px-4">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-5 fw-semibold">
+                                Create Membership
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.bg-gradient-primary { background:#F05B43; }
+.min-vh-80 { min-height:80vh; }
+.form-control, .form-select {
+    border-radius:12px;
+    padding:14px;
+}
+.card { border-radius:20px; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    });
+});
+</script>
+{% endblock %}

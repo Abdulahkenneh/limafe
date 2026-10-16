@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="max-width:600px;margin:60px auto;text-align:center;">
+    <h2>Membership Request Submitted</h2>
+
+    <p>
+        Your request to join the chapter has been successfully submitted.
+        Our administrators will review it shortly.
+    </p>
+
+    <a href="{% url 'home' %}" class="btn btn-primary">
+        Return to Home
+    </a>
+</div>
+{% endblock %}
