@@ -119,12 +119,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # === Jazzmin ===
 JAZZMIN_SETTINGS = {
-    "site_title": "Limafe Admin",
-    "site_header": "Limafe",
-    "site_brand": "Limafe",
-    "site_logo": 'assets/img/logo/mainlogo-light.png',
-    "welcome_sign": "Welcome to Limafe Admin!",
-    "copyright": "Limafe © 2024",
+    "site_title": "AMA",
+    "site_header": "AMA",
+    "site_brand": "AMA",
+    "site_logo": 'assets/img/logo/footer_logo.png',
+    "welcome_sign": "Arizona Mandingo Association!",
+    "copyright": "AMA © 2024",
 
     "topmenu_links": [
         {"name": "Dashboard", "url": "admin:index", "permissions": ["limafiapp.view_user"]},
