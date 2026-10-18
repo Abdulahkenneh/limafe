@@ -14,7 +14,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-an*q7mp#3ml52%$rah*2j-3)kaa0u7n!)o^i9&vilj*qpw&sg9'
 DEBUG = True
 
-ALLOWED_HOSTS = ['limafe-production.up.railway.app']
+ALLOWED_HOSTS = [  "localhost", "127.0.0.1",
+    ".railway.app",
+    ".up.railway.app",]
 
 # APPLICATIONS
 INSTALLED_APPS = [
