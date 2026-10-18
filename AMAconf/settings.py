@@ -174,6 +174,10 @@ STRIPE_WEBHOOK_SECRET = 'your_webhook_secret_here'
 CURRENCY = 'USD'
 CURRENCY_SYMBOL = '$'
 
+
+
+
 CSRF_TRUSTED_ORIGINS = [
-    'https://limafe.pythonanywhere.com',
+    "https://*.railway.app",
+    "https://*.up.railway.app",
 ]
