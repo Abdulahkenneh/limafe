@@ -1,1 +1,1 @@
-web: gunicorn AMAconf.wsgi --log-file -
+web: gunicorn AMAconf.wsgi --bind 0.0.0.0:$PORT --log-file -
