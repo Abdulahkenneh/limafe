@@ -1,1 +1,1 @@
-web: python manage.py collectstatic --noinput && python manage.py migrate --noinput && gunicorn AMAconf.wsgi --bind 0.0.0.0:$PORT --log-file -
+web: gunicorn AMAconf.wsgi --log-file -
