@@ -4,11 +4,11 @@
 {% block title %}{{ block.super }} - {{ object.title }}{% endblock %}
 
 {% block meta_description %}
-Event details for {{ object.title }} on LIMAFI.
+Event details for {{ object.title }} on AMA.
 {% endblock %}
 
 {% block meta_keywords %}
-limafi, event, {{ object.title }}, {{ object.type }}
+AMA, event, {{ object.title }}, {{ object.type }}
 {% endblock %}
 
 {% block content %}
@@ -312,7 +312,7 @@ limafi, event, {{ object.title }}, {{ object.type }}
                             <a href="{% url 'event_report' object.pk %}" class="btn btn-info">
                                 <i class="far fa-chart-bar me-1"></i> View Report
                             </a>
-                            <a href="{% url 'admin:limafiapp_booking_changelist' %}?event__id__exact={{ object.pk }}" class="btn btn-secondary">
+                            <a href="{% url 'admin:AMAapp_booking_changelist' %}?event__id__exact={{ object.pk }}" class="btn btn-secondary">
                                 <i class="far fa-list-alt me-1"></i> View Bookings
                             </a>
                             <a href="{% url 'event_checkout' object.pk %}?test=true" class="btn btn-outline-primary">

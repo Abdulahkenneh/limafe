@@ -7,12 +7,64 @@
     <list default="true" id="4f801b83-55bf-4102-9b92-d09a866a3ade" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limaficonf/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/limaficonf/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/management/commands/generate_templates.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0002_alter_booking_verification_code_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0003_membership_is_active_alter_booking_verification_code.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0004_chapter_positions_membership_household_size_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0005_customuser_bio_alter_booking_verification_code.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0006_alter_booking_verification_code_alter_customuser_bio.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0007_alter_membership_options_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0008_alter_booking_verification_code.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0009_alter_booking_verification_code_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0010_executiveboard_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0011_alter_booking_verification_code_alter_event_price.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0012_alter_booking_verification_code.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/0013_alter_booking_verification_code.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/mixins.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/serializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/signals.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/templatetags/team_filters.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/ut" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limafiapp/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limaficonf/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limaficonf/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limaficonf/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limaficonf/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limaficonf/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/terms.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/terms.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/booking_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/booking_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/donation_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/donation_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/donation_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/donation_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/event_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/event_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/media_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/media_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/message_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/message_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/message_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/message_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/newsletter_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/newsletter_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/page_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/page_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/page_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/page_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/page_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/page_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/password_reset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/post_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/post_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/post_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/project_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/project_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/project_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user_update.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user_update.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
